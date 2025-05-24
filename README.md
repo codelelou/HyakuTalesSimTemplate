@@ -32,6 +32,7 @@
 - [フォルダ構成（プログラムなどメインのコンテンツフォルダ）](#フォルダ構成プログラムなどメインのコンテンツフォルダ)
 - [共通システム](#共通システム)
   - [インタラクション](#インタラクション)
+  - [ダイアログ（ボイス対応会話システム）](#ダイアログボイス対応会話システム)
   - [時計](#時計)
 - [応用編](#応用編)
   - [国際化（多言語対応）](#国際化多言語対応)
@@ -302,18 +303,18 @@ HyakuTalesフォルダに関しては削除しても構いません（アナロ�
 * ActorComponentとしてWST_BP_InteractionComponent_Actor（/Content/WalkingSimTpl/Component/Interaction/WST_BP_InteractionComponent_Actor.uasset）を追加する。
 * インタラクション用OverlapCollisionを追加する（大き目のサイズにし、プレイヤーキャラクターがオーバーラップしている時にインタラクションの判定処理が行われる）。
 * インタラクション用ArrowComponentを追加する（プレイヤーキャラクターの視界にActorBlueprintが入っているかの基準として使われる）。
-* Lelool_BPI_InteractionActorインターフェース（/Content/Lelool/Component/Interaction/Actor/Lelool_BPI_InteractionActor.uasset）を実装する。
-* Lelool_BPI_InteractionActorインターフェースのGetInteractionActorVisioTargets関数がインタラクション用ArrowComponentを返すようにする。
+* Lelool_BPI_InteractionActorブループリントインターフェース（/Content/Lelool/Component/Interaction/Actor/Lelool_BPI_InteractionActor.uasset）を実装する。
+* Lelool_BPI_InteractionActorブループリントインターフェースのGetInteractionActorVisioTargets関数がインタラクション用ArrowComponentを返すようにする。
 
 これらの手順は共通して必要なもので、ActorBlueprint別に「蝋燭を消す」や「アイテムを拾う」や「ドアを開ける」といった個別のアクションに対応する必要があります。  
 
 まずはインタラクトが可能になった時に画面下部のインタラクションUIにメニューを表示する方法です。  
-これはLelool_BPI_InteractionActorインターフェースのGetInteractionActorActions関数を使います。  
+これはLelool_BPI_InteractionActorブループリントインターフェースのGetInteractionActorActions関数を使います。  
 サンプルのHT_BP_Actor_Candle_Base（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Base.uasset）では、蝋燭点灯時にLightsOutAction（消灯アクション）として消灯用GameplayTagを返すようになっています。  
 もしこれがドアであれば、ドアが閉じていることをプログラムでチェックした上でドアを開ける用GameplayTagを返したり、施錠用GameplayTagも一緒に返すことだってできます。  
 
 次はプレイヤーがインタラクションメニューからアクションを実行した場合の処理になります。  
-これにはLelool_BPI_InteractionActorインターフェースのCallInteractionActorActionイベントを使います。  
+これにはLelool_BPI_InteractionActorブループリントインターフェースのCallInteractionActorActionイベントを使います。  
 サンプルのHT_BP_Actor_Candle_Base（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Base.uasset）では、GameplayTag引数が消灯用GameplayTagと同じかチェックして、同じであれば消灯処理を実行しています。  
 もしこれがドアであれば、ドアを開ける用GameplayTagと同じならドアを開ける処理を、施錠用GameplayTagと同じであれば施錠処理を実行します。  
 
@@ -328,6 +329,23 @@ HyakuTalesフォルダに関しては削除しても構いません（アナロ�
 
 他にもインタラクション用ArrowComponentの位置や角度を変更することでも調節できる場合があります。
 またプレイヤーキャラクターの身長やActorBlueprintとの位置関係によっても判定に影響が出ることがあります。  
+
+## ダイアログ（ボイス対応会話システム）
+デモの新規プレイ時のメイン画面の冒頭で、百物語などの説明をダイアログ（Dialogue）システムで行っています。  
+サンプルでは行っていませんが、サンプルのメイン画面（HT_Level_CandlesSpace）のHT_BP_Actor_CandleManagerを選択し、［詳細］タブの［ダイアログ > DialogueDataTable］に「HT_DataTable_HowTo」を設定するとデモの説明を表示することができます（サンプルにボイスはありません）。  
+
+ダイアログシステムの使い方のサンプルが蝋燭マネージャー（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_CandleManager.uasset）になっています。  
+GetPlayerControllerノードからGetDialogue関数（WST_BPI_PlayerControllerブループリントインターフェース）を呼び、ReturnValueピンからShowDialogue関数（Lelool_BPI_Dialogueブループリントインターフェース）に表示したいダイアログのDataTableを引数として渡して呼びます。  
+
+この時、Auto引数にチェックを入れると自動再生となりプレイヤーキャラクターは動ける状態のままになります。  
+ただしセリフ中にトリガーを踏んだりインタラクションしたりしてイベントが発生すると不具合の原因になる恐れがあるため、自動再生する場合は注意しましょう（デフォルトではダイアログ表示中はインタラクト不可にしてはいます）。  
+
+またGetDialogue関数からOnChangedイベントディスパッチャー（表示するDataTableの行が変わった時に呼ばれる）やOnClosedイベントディスパッチャー（ダイアログが閉じた時に呼ばれる）をバインドでき、会話中にイベントを起こしたり会話終了時にイベントを起こすことも可能です。  
+
+サンプルのダイアログの書式はWST_Struct_Dialogue構造体（/Content/WalkingSimTpl/Dialogue/WST_Struct_Dialogue.uasset）とデータテーブルになっており、HT_DataTable_HowToデータテーブル（/Content/HyakuTales/Dialogue/HT_DataTable_HowTo.uasset）を参考・複製して作ってください。  
+話し手（Speaker）の国際化（多言語）対応にはWST_WBP_Dialogueウィジットブループリント（/Content/WalkingSimTpl/UI/Dialogue/WST_WBP_Dialogue.uasset）に話し手名のマッピングとローカリゼーションダッシュボードの作業が必要です。  
+
+なおダイアログのデータべテーブルはWST_Struct_Dialogue構造体でなくても自作の構造体でも可能ですが、WST_WBP_Dialogueウィジットブループリントを自作構造体用に変更する必要があります。  
 
 ## 時計
 ホラーゲームの演出用の小物としてアナログ時計のサンプルプログラムを用意しています（デジタル時計にも対応しています）。  
