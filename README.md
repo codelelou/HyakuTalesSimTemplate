@@ -32,6 +32,7 @@
 - [フォルダ構成（プログラムなどメインのコンテンツフォルダ）](#フォルダ構成プログラムなどメインのコンテンツフォルダ)
 - [共通システム](#共通システム)
   - [インタラクション](#インタラクション)
+  - [時計](#時計)
 - [応用編](#応用編)
   - [国際化（多言語対応）](#国際化多言語対応)
   - [操作方法のキー設定](#操作方法のキー設定)
@@ -290,6 +291,68 @@ HyakuTalesフォルダに関しては削除しても構いません（アナロ�
 # 共通システム
 
 ## インタラクション
+インタラクションはアイテムを拾ったりドアの開閉などに使うもので、サンプルの百物語カウンターでは蝋燭を消すアクションがこれにあたります。  
+このインタラクション機能はFPS視点向けのため、TPS視点や固定カメラだと期待する判定が行われないため操作性の低下の恐れがあります。  
+
+ゲームでは頻繁に使われる機能のため、インタラクション可能ActorBlueprintのベース（/Content/WalkingSimTpl/Blueprint/Actor/WST_BP_Actor_Interaction_Base.uasset）を作成済みです。  
+このActorBlueprintを複製するか子クラスとして、拾うことができるアイテムなどのActorBlueprintを作ると便利です。  
+もしアセットストアで入手したActorBlueprintにインタラクション機能を追加したい時は、そのActorBlueprintの親クラスが「Actor」であれば、その親クラスを「WST_BP_Actor_Interaction_Base」すれば使えるようになるはずです（親クラスの変更は［クラス設定 > クラスオプション > 親クラス］から行えます）。  
+
+参考までにインタラクション可能なActorBlueprintを作る共通となる手順を紹介します。  
+* ActorComponentとしてWST_BP_InteractionComponent_Actor（/Content/WalkingSimTpl/Component/Interaction/WST_BP_InteractionComponent_Actor.uasset）を追加する。
+* インタラクション用OverlapCollisionを追加する（大き目のサイズにし、プレイヤーキャラクターがオーバーラップしている時にインタラクションの判定処理が行われる）。
+* インタラクション用ArrowComponentを追加する（プレイヤーキャラクターの視界にActorBlueprintが入っているかの基準として使われる）。
+* Lelool_BPI_InteractionActorインターフェース（/Content/Lelool/Component/Interaction/Actor/Lelool_BPI_InteractionActor.uasset）を実装する。
+* Lelool_BPI_InteractionActorインターフェースのGetInteractionActorVisioTargets関数がインタラクション用ArrowComponentを返すようにする。
+
+これらの手順は共通して必要なもので、ActorBlueprint別に「蝋燭を消す」や「アイテムを拾う」や「ドアを開ける」といった個別のアクションに対応する必要があります。  
+
+まずはインタラクトが可能になった時に画面下部のインタラクションUIにメニューを表示する方法です。  
+これはLelool_BPI_InteractionActorインターフェースのGetInteractionActorActions関数を使います。  
+サンプルのHT_BP_Actor_Candle_Base（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Base.uasset）では、蝋燭点灯時にLightsOutAction（消灯アクション）として消灯用GameplayTagを返すようになっています。  
+もしこれがドアであれば、ドアが閉じていることをプログラムでチェックした上でドアを開ける用GameplayTagを返したり、施錠用GameplayTagも一緒に返すことだってできます。  
+
+次はプレイヤーがインタラクションメニューからアクションを実行した場合の処理になります。  
+これにはLelool_BPI_InteractionActorインターフェースのCallInteractionActorActionイベントを使います。  
+サンプルのHT_BP_Actor_Candle_Base（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Base.uasset）では、GameplayTag引数が消灯用GameplayTagと同じかチェックして、同じであれば消灯処理を実行しています。  
+もしこれがドアであれば、ドアを開ける用GameplayTagと同じならドアを開ける処理を、施錠用GameplayTagと同じであれば施錠処理を実行します。  
+
+なおインタラクト可能なActorBlueprintは可能な限り距離を離して配置することを推奨します。  
+
+デモでは参考としてあえて100本の蝋燭を近づけて配置する方法を実現していますが、個々の蝋燭の判定処理を小さくするなどの調整が必要となるため、ゲームによっては判定の悪さからゲーム体験を損なう恐れがあります。  
+判定の調整はWST_BP_InteractionComponent_Actorを選択し、エディタ右側に表示される［詳細］タブのパラメーターで可能です。  
+デモでは次のように調整しています。  
+* OverrideMaxVisioDistance（インタラクト可能な距離） = 初期値500
+* OverrideObjectAngle（インタラクション用ArrowComponentの視角） = 初期値360（ドアスコープや鍵穴などを覗くアクションの場合に片側からしか覗けないようにするなどの使い方が可能）
+* OverridePlayerAngle（インタラクト可能なプレイヤーの視角） = 初期値25（小さいと判定が悪くなり、逆に大きすぎると背後のアイテム入手やドアの開閉が可能になってしまいます）
+
+他にもインタラクション用ArrowComponentの位置や角度を変更することでも調節できる場合があります。
+またプレイヤーキャラクターの身長やActorBlueprintとの位置関係によっても判定に影響が出ることがあります。  
+
+## 時計
+ホラーゲームの演出用の小物としてアナログ時計のサンプルプログラムを用意しています（デジタル時計にも対応しています）。  
+
+時間を指定することも、プレイヤーの端末のローカル時間に連動することも、高速回転・逆回転・高速逆回転・進まない故障演出（秒針の痙攣）などが簡単にできます。  
+サンプルのメインメニューやポーズメニューから時計の状態を変更できるオプションを用意しているので、どのような機能なのかお試しください。試すとわかるかと思いますが、高速回転演出を行うのであれば秒針が無い時計の方が良いと思いますし、逆回転や進まない故障演出（4時44分44秒）では秒針が無いとわかりにくいとは思います。  
+
+サンプルの時計はゲームに使用するにはチープすぎると思うので、時計のベース用ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Clock/HT_BP_Actor_Clock_Base.uasset）の子クラスを作って、時計の本体・短針・長針・秒針（必要なら）の3Dモデルを追加すると良いでしょう。  
+時計の針をそれぞれ所定のSceneComponentに配置すると、自動的に時間に合わせて回転します（サンプルも参考にしてください）。
+* HourHandScene（短針/時）
+* MinuteHandScene（長針/分）
+* SecondHandScene（秒針/秒）
+使用する3Dモデルによって向きが異なるため、実際にエディタ上でゲームをプレイする時に確認してください。
+
+時計の開始時刻は時計ActorBlueprintのTime変数で指定できます（4時44分44秒なら「+00000000.04:44:44.000000000」とします）。  
+また秒針がある時計ではお好みでIsMinuteUnitHand変数にチェックを入れると良いと思います（長針が毎秒動くか00秒の時に動くかどうか）。  
+
+時計の電源や故障の設定は、時計ActorBlueprintを開いてエディタ左側の［コンポーネント］タブの［ClockComponent］を選択し、右側に表示される［詳細］タブの［デフォルト > Setting］で行います。  
+* Realtime（現在時刻を有効にするか）
+* Power（時計を動かすかどうか）
+* Reverse（逆回転するかどうか）
+* Paralysis（進まない痙攣演出するかどうか）
+* Speedy（高速回転するかどうか）
+
+優先度の高い順から「Power」「Paralysis」「Reverse/Speedy」「Realtime」「時計ActorBlueprintのTime変数」となります。  
 
 ---
 
