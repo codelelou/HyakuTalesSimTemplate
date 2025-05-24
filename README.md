@@ -30,6 +30,9 @@
   - [その他](#その他)
 - [パッケージ化（配布用exeファイル作成）](#パッケージ化配布用exeファイル作成)
 - [フォルダ構成（プログラムなどメインのコンテンツフォルダ）](#フォルダ構成プログラムなどメインのコンテンツフォルダ)
+- [ウォーキングシミュレーターゲームテンプレート](#ウォーキングシミュレーターゲームテンプレート)
+  - [GameInstance](#gameinstance)
+  - [GameMode](#gamemode)
 - [共通システム](#共通システム)
   - [インタラクション](#インタラクション)
   - [ダイアログ（ボイス対応会話システム）](#ダイアログボイス対応会話システム)
@@ -281,13 +284,57 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 ---
 
 # フォルダ構成（プログラムなどメインのコンテンツフォルダ）
-* HyakuTales … 百物語カウンターの本体
-* Lelool … 共通プログラムファイルで原則変更非推奨
+* HyakuTales … 百物語カウンターの本体（ファイル名は原則として「HT_」ではじまるように統一しています）
+* Lelool … 共通プログラムファイルで可能な限り編集は避けることを推奨（ファイル名は原則として「Lelool_」ではじまるように統一しています）
 * Localization … 国際化ファイルで直接変更非推奨（Unreal Engine標準のローカライゼーションダッシュボードが生成するフォルダ・ファイル）
-* WalkingSimTpl … ウォーキングシミュレーターゲームのテンプレート
+* WalkingSimTpl … ウォーキングシミュレーターゲームのテンプレート（ファイル名は原則として「WST_」ではじまるように統一しています）
 
-もし百物語カウンター以外のウォーキングシミュレーターゲームなどを作る場合は、WalkingSimTplフォルダをそのまま使用・編集・ファイル追加すると便利かと思います。  
+メインのプログラムは極力Leloolフォルダの共通プログラムファイルで行っているため、このゲームテンプレートをアップデートする際はこの共通プログラムファイルがメインになります。  
+そのためLeloolフォルダの編集を避けることで、ゲームテンプレートのアップデートを行う際のマージの手間とリスクの抑制が期待できます。  
+
+なお百物語カウンターではWalkingSimTplフォルダを編集していませんが、これは手間や不便が多くサンプル用であえて行っているだけで、オリジナルゲーム制作ではWalkingSimTplフォルダをメインフォルダにすることを推奨します。  
+
+---
+
+# ウォーキングシミュレーターゲームテンプレート
+サンプルプログラムは百物語カウンターになっていますが、ベースはウォーキングシミュレーターゲームです。  
+
+もし百物語カウンター以外のウォーキングシミュレーターベースのゲームなどを作るような場合は、WalkingSimTplフォルダをそのまま使用・編集・ファイル追加すると便利かと思います。  
 HyakuTalesフォルダに関しては削除しても構いません（アナログ時計のサンプルプログラムなどを使う場合は、WalkingSimTplフォルダに移動すると良いでしょう）。  
+
+## GameInstance
+GameInstanceはゲーム起動時に呼ばれ、そのままゲーム終了時まで使われます（レベルやGameMode、PlayerController、PlayerCharacterなどは、レベルが変わる度に破棄・読込が行われます）。  
+
+デフォルトでは百物語カウンター用GameInstance（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）になっているため、オリジナルゲーム制作時はウォーキングシミュレーター用GameInstanceに変更しましょう。  
+エディタ上部の［編集 > プロジェクト設定］を左クリックしてプロジェクト設定を開き、［プロジェクト > マップ&モード > GameInstance > ゲームインスタンス］にWST_BP_GameInstance（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BP_GameInstance.uasset）を設定して変更できます。  
+
+そしてWST_BP_GameInstanceブループリントを開き、エディタ上部の［クラスのデフォルト］ボタンを左クリックし、［詳細］タブの各項目を必要に応じて編集してください。  
+* MainMenuLevel（メインメニューレベルを設定する）
+* MainLevel（メインレベルを設定する）
+* ProjectDataTable（メインメニューの著作権表記や、インフォメーションのクレジット表記の情報をまとめたデータテーブルを設定する）
+
+サンプルではMainLevelは1つしか設定できませんが、メインメニューレベルとメインレベルの2つだけでは足りない場合は、このGameInstanceに他のレベルを開く処理（OpenLevel）を実装します（その場合はレベルファイルの変数化は必須ではありません）。  
+
+ただこのゲームテンプレートはあくまでウォーキングシミュレーターゲームのベースとなるテンプレートであり、Unreal Engineでのゲーム制作を広く・深く解説するのを目的としていないため、詳しい解説は行いません。  
+
+## GameMode
+Unreal Engineではレベル毎に何かしらのGameModeブループリントを設定することになり、レベル毎に使用するPlayerControllerやPlayerCharacterなどのクラスを設定します。  
+UI専用レベルであればプレイヤーキャラクターは不要なため、プレイヤーキャラクタークラスを設定していないGameModeを使うのがベターです。  
+
+ウォーキングシミュレーター用にGameModeは大まかにUI用GameMode（/Content/WalkingSimTpl/Blueprint/GameMode/WST_BP_GameMode_Menu.uasset）とキャラクターが歩く用GameMode（/Content/WalkingSimTpl/Blueprint/GameMode/WST_BP_GameMode_Character.uasset）を作っており、UI用が親クラス（ベース）でキャラクターが歩く用が子クラスとなっています。  
+なお百物語カウンターで使っているGameModeはそれぞれの子クラスであり、UI用GameMode（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_MainMenu.uasset）とキャラクターが歩く用GameMode（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_Candles.uasset）となっています。  
+
+ゲームの仕様によっては異なりますが、
+* メインメニューレベル（起動画面）: UI用GameMode
+* ステージ1レベル: キャラクターが歩く用GameMode
+* ステージ2レベル: キャラクターが歩く用GameMode
+* ステージ3レベル: キャラクターが歩く用GameMode
+* ステージ4レベル: キャラクターが歩く用GameMode
+* ステージ5レベル: キャラクターが歩く用GameMode
+* エンドロールレベル: UI用GameMode
+のような感じになるかなと思われます（ムービーシーン専用レベルを作る場合はUI用GameModeを使うかもしれません）。
+
+全てキャラクターが歩く用GameModeにして、UI用レベルの時はカメラを固定にし、プレイヤーキャラクターの入力を無効化（DisableInput）するといったこともできます。  
 
 ---
 
@@ -343,6 +390,7 @@ GetPlayerControllerノードからGetDialogue関数（WST_BPI_PlayerController�
 ただしセリフ中にトリガーを踏んだりインタラクションしたりしてイベントが発生すると不具合の原因になる恐れがあるため、自動再生する場合は注意しましょう（デフォルトではダイアログ表示中はインタラクト不可にしてはいます）。  
 
 またGetDialogue関数からOnChangedイベントディスパッチャー（表示するDataTableの行が変わった時に呼ばれる）やOnClosedイベントディスパッチャー（ダイアログが閉じた時に呼ばれる）をバインドでき、会話中にイベントを起こしたり会話終了時にイベントを起こすことも可能です。  
+このダイアログシステムは選択肢の表示には対応していませんが、OnClosedイベントディスパッチャーなどで特定のダイアログを閉じた際に選択肢UIを表示するなどで対応可能です。  
 
 サンプルのダイアログの書式はWST_Struct_Dialogue構造体（/Content/WalkingSimTpl/Dialogue/WST_Struct_Dialogue.uasset）とデータテーブルになっており、HT_DataTable_HowToデータテーブル（/Content/HyakuTales/Dialogue/HT_DataTable_HowTo.uasset）を参考・複製して作ってください。  
 話し手（Speaker）の国際化（多言語）対応にはWST_WBP_Dialogueウィジットブループリント（/Content/WalkingSimTpl/UI/Dialogue/WST_WBP_Dialogue.uasset）に話し手名のマッピングとローカリゼーションダッシュボードの作業が必要です。  
