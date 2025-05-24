@@ -26,11 +26,12 @@
 - [導入（開発環境構築）](#導入開発環境構築)
 - [オリジナル百物語カウンターの作り方](#オリジナル百物語カウンターの作り方)
   - [蝋燭の編集](#蝋燭の編集)
-  - [メインメニューの編集](#メインメニューの編集)
   - [メイン画面の編集](#メイン画面の編集)
   - [その他](#その他)
 - [パッケージ化（配布用exeファイル作成）](#パッケージ化配布用exeファイル作成)
 - [フォルダ構成（プログラムなどメインのコンテンツフォルダ）](#フォルダ構成プログラムなどメインのコンテンツフォルダ)
+- [共通システム](#共通システム)
+  - [インタラクション](#インタラクション)
 - [応用編](#応用編)
   - [国際化（多言語対応）](#国際化多言語対応)
   - [操作方法のキー設定](#操作方法のキー設定)
@@ -99,14 +100,11 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 * [和風環境: Japanese Farmhouse](https://www.fab.com/ja/listings/99f75379-1e36-4c6b-bd06-3a9931d48ecf)
 * [蝋燭: Candle VFX](https://www.fab.com/ja/listings/98e82577-7a94-4a30-b5b4-b5a2d6073061)
 
-百物語カウンターは起動画面とメイン画面の2つで構成されています（Unreal Engineでは主に「レベル（Level）」で画面・マップ・シーンを分けて作ります）。  
-* 起動画面（メインメニュー）: /Content/HyakuTales/Level/HT_Level_MainMenu.umap
-* メイン画面: /Content/HyakuTales/Level/HT_Level_CandlesSpace.umap
-
-大まかな作業の流れとしては、「蝋燭」と「画面」の3Dモデルの差替え・追加削除です。  
+ご自身の百物語配信用にオリジナル版を作るだけなら、「蝋燭」と「メイン画面」の編集だけ良いかと思います。  
+第三者に公開する場合は必要に応じて「その他」を参考に編集を行ってください（特に使用するアセットや素材によってはクレジット表記が必要なため）。  
 
 ## 蝋燭の編集
-蝋燭（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCadleVFX.uasset）は1つのプログラムになっており、点灯・消灯で見た目が変化するようになっています。  
+蝋燭（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCandleVFX.uasset）は1つのプログラムになっており、点灯・消灯で見た目が変化するようになっています。  
 
 デモで使用している[蝋燭アセット: Candle VFX](https://www.fab.com/ja/listings/98e82577-7a94-4a30-b5b4-b5a2d6073061)は個人ライセンス（2025年5月24日現在）なら無料で使用できるため、サンプルの蝋燭では簡単なStaticMesh（3Dモデル）やマテリアル（3Dモデルの表面の画像など）などの設定だけで使用できるようにしています。  
 もしこのアセットを使用しない場合は、サンプルとして用意しているシンプルな蝋燭（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Simple.uasset）を参考にカスタマイズしてください。  
@@ -114,28 +112,54 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 この蝋燭アセットはWeb上からでもエディタ上でも入手可能です。  
 エディタで使えるように追加するには、エディタ上部の［ウィンドウ > （コンテンツを取得） > Fab］を左クリックしてFabプラグインを開き、Fabプラグインの検索機能やMy Libraryなどからこの蝋燭をアセットを開き、［Add to Project］ボタンを左クリックします。ダウンロード・追加が完了すれば、「Lelool」フォルダや「WalkingSimTpl」フォルダと並んで「Vefects」フォルダが作成されていると思います。  
 
-蝋燭アセットがプロジェクトに追加できたら、先程の蝋燭アクターブループリント（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCadleVFX.uasset）を開きます。  
+蝋燭アセットがプロジェクトに追加できたら、先程の蝋燭ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCandleVFX.uasset）を開きます。  
 そしてエディタ上部の［クラスのデフォルト］を左クリックし、「Candle Asset」の各項目に蝋燭アセットを設定していきます。  
 - Wax（蝋燭のロウ）
   - WaxStaticMesh = SM_Melted_Candle_02_No_Wick
 - Wick（蝋燭の芯）
   - WickStaticMesh = SM_Candle_Wick_01
-  - WickLightOnMaterial（灯火時の先端が光る芯） = MI_Candle_Wick_BP_01
-  - WickLightOffMaterial（消灯時の光っていない芯） = MI_Candle_Wick_Off_01
+  - WickLightsOnMaterial（灯火時の先端が光る芯） = MI_Candle_Wick_BP_01
+  - WickLightsOutMaterial（消灯時の光っていない芯） = MI_Candle_Wick_Off_01
 - Flame（蝋燭灯火時の炎）
   - FlameNiagaraSystemAsset（炎エフェクト） = NS_Candle_Flame_01
-  - LightOutSmokeNiagaraSystemAsset（消灯時の白煙エフェクト） = NS_Candle_Smoke_Mesh_01_Once
+  - LightsOutSmokeNiagaraSystemAsset（消灯時の白煙エフェクト） = NS_Candle_Smoke_Mesh_01_Once
 
-蝋燭アクターブループリントの編集が完了したら、エディタ左上当たりの［コンパイル］ボタンを左クリックします。  
+蝋燭ActorBlueprintの編集が完了したら、エディタ左上当たりの［コンパイル］ボタンを左クリックします。  
 ［ビューポート］タブから蝋燭の見た目が変わったことを確認できるかと思います。  
 
-なおデモでは消灯時に効果音を鳴らしているのですが、これは［クラスのデフォルト］の［LightOutSound］変数にサウンドソースを設定しておくことで鳴らせます（デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用しています）。  
+なおデモでは消灯時に効果音を鳴らしているのですが、これは［クラスのデフォルト］の［LightsOutSound］変数にサウンドソースを設定しておくことで鳴らせます（デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用しています）。  
 
-## メインメニューの編集
+## メイン画面の編集
+メイン画面（/Content/HyakuTales/Level/HT_Level_CandlesSpace.umap）は次のアクター（Unreal Engineではレベル上に配置する3Dモデルやライトなどのあらゆるものをアクターと呼びます）で構成されています。  
+* Plane（床）
+* 蝋燭×100本
+* HT_BP_Actor_CandleManager(蝋燭を管理するプログラム)
+* PlayerStart（プレイヤーキャラクターがスポーンされる開始位置）
+* DirectionalLight（全体を照らす照明）
+* 時計（アナログ時計プログラムのデモ用のため不要なら削除してください）
+
+お好みで床を削除したり3Dモデルや照明などを配置したり、カメラを移動・回転したりしてください。  
+必ず蝋燭の数は100本になるようにしてください。  
+
+なおデモのように蝋燭間の距離が近いと、近づいた時に消す対象となる蝋燭の数が多くなり、操作性が悪くなる恐れがあります。  
+
+どうしても蝋燭間の距離を近づけたい時は、蝋燭ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCadleVFX.uasset）を開き、エディタ左側の［コンポーネント］タブ内のInteractionComponentを選択し、エディタ右側に表示される［詳細］タブのパラメーターを調整してください。  
+デモでは次のように調整しています。  
+* OverrideMaxVisioDistance（インタラクト可能な距離） = 300（初期値500）
+* OverridePlayerAngle（インタラクト可能なプレイヤーの視角） = 10（初期値25で、小さいと判定が悪くなり操作性が犠牲になります）
+
+あわせて、デモでは蝋燭ActorBlueprintのInteractionViewArrow（コンポーネントタブ内）の位置を「(X=0.000000,Y=0.000000,Z=70.000000)」に調整しています。  
+このInteractionViewArrowはインタラクト可能なプレイヤーの視角を判定する時の基準なのですが、対象（蝋燭）の位置とプレイヤーキャラクターの身長などで判定が異なるため、参考程度にしてください。  
+
+可能であれば蝋燭の配置を見直し、蝋燭間との距離を開けるようにすることを推奨します。  
+
+## その他
+
+### メインメニューの編集
 メインメニューは起動時に表示される画面で、終了もこの画面から行います（Alt+F4キーでも終了可能です）。  
 ご自身の百物語配信で使用する場合など、メインメニューのカスタマイズが不要なら編集は不要です。  
 
-メインメニュー（/Content/HyakuTales/Level/HT_Level_MainMenu.umap）は次のアクター（Unreal Engineではレベル上に配置する3Dモデルやライトなどのあらゆるものをアクターと呼びます）で構成されています。  
+メインメニュー（/Content/HyakuTales/Level/HT_Level_MainMenu.umap）は次のアクターで構成されています。  
 * Plane（床）
 * 蝋燭×6本
 * HT_BP_LevelHelper_MainMenu（メインメニューのUI表示などを行っているプログラム）
@@ -145,32 +169,6 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 
 サンプルではHT_BP_LevelHelper_MainMenuが蝋燭6本を参照しているため、蝋燭を削除する場合はその前に、HT_BP_LevelHelper_MainMenuを選択し［デフォルト > Candles］変数の右側にある削除ボタン（ゴミ箱アイコン）を左クリックして参照を解除してください。  
 ちなみにこの蝋燭6本の参照は、メインメニュー表示中にメニュー内のボタンのホバー状態に応じて点灯する蝋燭が変化するギミックに使用しているだけです。  
-
-## メイン画面の編集
-メイン画面（/Content/HyakuTales/Level/HT_Level_CandlesSpace.umap）は次のアクターで構成されています。  
-* Plane（床）
-* 蝋燭×100本
-* HT_BP_Actor_CandleManager(蝋燭を管理するプログラム)
-* PlayerStart（プレイヤーキャラクターがスポーンされる開始位置）
-* DirectionalLight（全体を照らす照明）
-* 時計（アナログ時計プログラムのデモ用のため不要なら削除してください）
-
-メインメニューと同様にお好みで床を削除したり3Dモデルなどを配置します。  
-メインメニューと違い蝋燭への参照はありませんが、必ず蝋燭の数は100本になるようにしてください。  
-
-なおデモのように蝋燭間の距離が近いと、近づいた時に消す対象となる蝋燭の数が多くなり、操作性が悪くなる恐れがあります。  
-
-どうしても蝋燭間の距離を近づけたい時は、蝋燭アクターブループリント（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCadleVFX.uasset）を開き、エディタ左側の［コンポーネント］タブ内のInteractionComponentを選択し、エディタ右側に表示される［詳細］タブのパラメーターを調整してください。  
-デモでは次のように調整しています。  
-* OverrideMaxVisioDistance（インタラクト可能な距離） = 300（初期値500）
-* OverridePlayerAngle（インタラクト可能なプレイヤーの視角） = 10（初期値25で、小さいと判定が悪くなり操作性が犠牲になります）
-
-あわせて、デモでは蝋燭アクターブループリントのInteractionViewArrow（コンポーネントタブ内）の位置を「(X=0.000000,Y=0.000000,Z=70.000000)」に調整しています。  
-このInteractionViewArrowはインタラクト可能なプレイヤーの視角を判定する時の基準なのですが、対象（蝋燭）の位置とプレイヤーキャラクターの身長などで判定が異なるため、参考程度にしてください。  
-
-可能であれば蝋燭の配置を見直し、蝋燭間との距離を開けるようにすることを推奨します。  
-
-## その他
 
 ### 百物語オプションUIの編集
 百物語オプションUI（/Content/HyakuTales/UI/HT_WBP_HyakuTalesOptions.uasset）には3つの項目があります。  
@@ -286,6 +284,12 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 
 もし百物語カウンター以外のウォーキングシミュレーターゲームなどを作る場合は、WalkingSimTplフォルダをそのまま使用・編集・ファイル追加すると便利かと思います。  
 HyakuTalesフォルダに関しては削除しても構いません（アナログ時計のサンプルプログラムなどを使う場合は、WalkingSimTplフォルダに移動すると良いでしょう）。  
+
+---
+
+# 共通システム
+
+## インタラクション
 
 ---
 
