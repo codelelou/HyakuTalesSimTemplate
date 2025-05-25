@@ -126,6 +126,7 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 
 この蝋燭アセットはWeb上からでもエディタ上でも入手可能です。  
 エディタで使えるようにUnrealプロジェクトに追加するには、エディタ上部の［ウィンドウ > （コンテンツを取得） > Fab］を左クリックしてFabプラグインを開き、Fabプラグインの検索機能やMy Libraryなどからこの蝋燭をアセットを開き、［Add to Project］ボタンを左クリックします。ダウンロード・追加が完了すれば、「Lelool」フォルダや「WalkingSimTpl」フォルダと並んで「Vefects」フォルダが作成されていると思います。  
+![Fabプラグインを開いてアセット追加完了までの大まかな流れの図解](https://github.com/user-attachments/assets/186881dc-89d0-427f-80ed-4e28a66a0d37)
 
 蝋燭アセットがプロジェクトに追加できたら、先程の蝋燭ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCandleVFX.uasset）を開きます。  
 そしてエディタ上部の［クラスのデフォルト］を左クリックし、「Candle Asset」の各項目に蝋燭アセットを設定していきます。  
@@ -145,6 +146,8 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 なおデモでは消灯時に効果音を鳴らしているのですが、これは［クラスのデフォルト］の［LightsOutSound］変数にサウンドソースを設定しておくことで鳴らせます。  
 デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用していますが、Unreal EngineはMP3ファイル形式に対応していないため、事前にWavファイル形式などに変換しておく必要があります。また追加した[音ファイルの種類を設定](#サウンドの種類の設定方法)することで環境設定での音量調整と連動できます。
 
+![HT_BP_Actor_Candle_VefectsCandleVFXブループリントの編集の図解](https://github.com/user-attachments/assets/25b2fc97-d0f8-4224-8c82-7c67516b310a)
+
 ## メイン画面の編集
 100本の蝋燭が表示される百物語カウンターのメイン画面には次の3つの要素が必要です。  
 1. 蝋燭×100本
@@ -163,14 +166,17 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 
 ただアセットストアで入手した環境アセットはあらかじめ建物などが組み立て済みのレベルが用意されていることが多く、そのレベルに先程の必要な3つの要素を配置する方が楽かと思います（PlyarStartアクターは予め配置されてることがあります）。
 もしこのようなアセットのレベルを使用する場合は、そのレベルのGameModeをHT_BP_GameMode_Candlesブループリント（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_Candles.uasset）に変更してください。エディタのレベルビューの右上あたりの［設定］ボタンを左クリックし、［ワールドセッティング］を左クリックして表示される［ワールドセッティング］タブの［GameMode > ゲームモードオーバーライド］に「HT_BP_GameMode_Candles」を設定します。  
+![メイン画面レベルのGameModeを変更する手順の図解](https://github.com/user-attachments/assets/41cd1f9c-fbdb-4d26-95cc-f86abb3beb9c)
 
 あわせてHT_BP_GameInstanceブループリント（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）を開き、エディタ上部の［クラスのデフォルト］を左クリックし、右側に表示される［詳細］タブの［デフォルト > MainLevel］に新たに作成したレベル（アセットのレベルを直接したのならそのレベル）を設定してください（デフォルトはサンプルのメイン画面になっています）。  
+![HT_BP_GameInstanceブループリントのMainLevelクラス編集変更箇所の図解](https://github.com/user-attachments/assets/c6948b43-e78e-45db-9ce7-570512f5878c)
 
 なおデモのように蝋燭間の距離が近いと、近づいた時に消す対象となる蝋燭の数が多くなり、調整しないと操作性が悪くなる恐れがあります。  
 どうしても蝋燭間の距離を近づけたい時は、蝋燭ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCadleVFX.uasset）を開き、エディタ左側の［コンポーネント］タブ内のInteractionComponentを選択し、エディタ右側に表示される［詳細］タブのパラメーターを調整してください。  
 デモでは次のように調整しています。  
 * OverrideMaxVisioDistance（インタラクト可能な距離） = 300（初期値500）
 * OverridePlayerAngle（インタラクト可能なプレイヤーの視角） = 10（初期値25で、小さいと判定が悪くなり操作性が犠牲になります）
+![蝋燭アクターのInteractionComponent設定のオーバーライド箇所の図解](https://github.com/user-attachments/assets/408d034a-f1e6-489f-a798-181434bfa09e)
 
 あわせて、デモでは蝋燭ActorBlueprintのInteractionViewArrow（コンポーネントタブ内）の位置を「(X=0.000000,Y=0.000000,Z=70.000000)」に調整しています。  
 このInteractionViewArrowはインタラクト可能なプレイヤーの視角を判定する時の基準なのですが、対象（蝋燭）の位置とプレイヤーキャラクターの身長などで判定が異なるため、参考程度にしてください。  
@@ -194,9 +200,12 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 * 蝋燭×6本
 
 メイン画面と同様に、アセットストアで入手したアセットが用意したレベルを使っても良いですし、サンプルのメインメニューレベルを編集しても良いです。  
-アセットストアで入手したアセットのレベルを使用する場合は、GameModeをHT_BP_GameMode_MainMenuブループリント（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_MainMenu.uasset）に設定してください。あわせて、レベル上のHT_BP_LevelHelper_MainMenuアクターを選択した状態でエディタ右側の［詳細］タブの［デフォルト > Camera］にレベル上のカメラアクターを設定してください（Camera項目の右側にあるスポイト風アイコンを左クリックした後にレベル上のカメラアクターを左クリックして設定可能）。  
 
-サンプルではHT_BP_LevelHelper_MainMenuが蝋燭6本を参照しているため、蝋燭を削除する場合はその前に、HT_BP_LevelHelper_MainMenuを選択し［デフォルト > Candles］変数の右側にある削除ボタン（ゴミ箱アイコン）を左クリックして参照を解除してください。  
+アセットストアで入手したアセットのレベルを使用する場合は、GameModeをHT_BP_GameMode_MainMenuブループリント（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_MainMenu.uasset）に設定してください。またメイン画面と同様に、HT_BP_GameInstanceブループリント（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）を開き、エディタ上部の［クラスのデフォルト］を左クリックし、右側に表示される［詳細］タブの［デフォルト > MainMenuLevel］に新たに作成したレベル（アセットのレベルを直接したのならそのレベル）を設定する必要があります（デフォルトはサンプルのメインメニューになっています）。  
+あわせて、レベル上のHT_BP_LevelHelper_MainMenuアクターを選択した状態でエディタ右側の［詳細］タブの［デフォルト > Camera］にレベル上のカメラアクターを設定してください（Camera項目の右側にあるスポイト風アイコンを左クリックした後にレベル上のカメラアクターを左クリックして設定可能）。  
+![HT_BP_LevelHelper_MainMenuアクターのCamera変数の場所の図解](https://github.com/user-attachments/assets/6be99770-dfe7-4436-8124-cfd20578599d)
+
+サンプルのメインメニューレベルではHT_BP_LevelHelper_MainMenuが蝋燭6本を参照しているため、これらの蝋燭を削除する場合はその前に、HT_BP_LevelHelper_MainMenuを選択し［デフォルト > Candles］変数の右側にある削除ボタン（ゴミ箱アイコン）を左クリックして参照を解除してください。  
 ちなみにこの蝋燭6本の参照は、メインメニュー表示中にメニュー内のボタンのホバー状態に応じて点灯する蝋燭が変化するギミックに使用しているだけです。  
 
 ### 百物語オプションUIの編集
