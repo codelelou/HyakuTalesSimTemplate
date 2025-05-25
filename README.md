@@ -143,18 +143,28 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 ［ビューポート］タブから蝋燭の見た目が変わったことを確認できるかと思います。  
 
 なおデモでは消灯時に効果音を鳴らしているのですが、これは［クラスのデフォルト］の［LightsOutSound］変数にサウンドソースを設定しておくことで鳴らせます。  
-デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用していますが、Unreal EngineはMP3ファイル形式に対応していないため、事前にWavファイル形式などに変換しておく必要があります。  
+デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用していますが、Unreal EngineはMP3ファイル形式に対応していないため、事前にWavファイル形式などに変換しておく必要があります。また追加した[音ファイルの種類を設定](#サウンドの種類の設定方法)することで環境設定での音量調整と連動できます。
 
 ## メイン画面の編集
-メイン画面（/Content/HyakuTales/Level/HT_Level_CandlesSpace.umap）は次のアクターで構成されています（Unreal Engineではレベル上に配置する3Dモデルやライトなどのあらゆるものをアクターと呼びます）。  
-* Plane（床）
+100本の蝋燭が表示される百物語カウンターのメイン画面には次の3つの要素が必要です。  
+1. 蝋燭×100本
+2. HT_BP_Actor_CandleManager(/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_CandleManager.uasset) … 蝋燭を管理するプログラム
+3. PlayerStart … プレイヤーキャラクターがスポーンされる開始位置
+
+サンプルのメイン画面（/Content/HyakuTales/Level/HT_Level_CandlesSpace.umap）では次のアクターで構成されています（Unreal Engineではレベル上に配置する3Dモデルやライトなどのあらゆるものをアクターと呼びます）ので参考にしてください。  
 * 蝋燭×100本
 * HT_BP_Actor_CandleManager(蝋燭を管理するプログラム)
 * PlayerStart（プレイヤーキャラクターがスポーンされる開始位置）
+* Plane（床）
 * DirectionalLight（全体を照らす照明）
 * 時計（アナログ時計プログラムのデモ用のため不要なら削除してください）
 
-お好みで床を削除したり3Dモデルや照明などを配置したりしてください（必ず蝋燭の数は100本になるようにしてください）。  
+サンプルのメイン画面を編集する場合は、お好みで床を削除したり3Dモデルや照明などを配置してください。  
+
+ただアセットストアで入手した環境アセットはあらかじめ建物などが組み立て済みのレベルが用意されていることが多く、そのレベルに先程の必要な3つの要素を配置する方が楽かと思います（PlyarStartアクターは予め配置されてることがあります）。
+もしこのようなアセットのレベルを使用する場合は、そのレベルのGameModeをHT_BP_GameMode_Candlesブループリント（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_Candles.uasset）に変更してください。エディタのレベルビューの右上あたりの［設定］ボタンを左クリックし、［ワールドセッティング］を左クリックして表示される［ワールドセッティング］タブの［GameMode > ゲームモードオーバーライド］に「HT_BP_GameMode_Candles」を設定します。  
+
+あわせてHT_BP_GameInstanceブループリント（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）を開き、エディタ上部の［クラスのデフォルト］を左クリックし、右側に表示される［詳細］タブの［デフォルト > MainLevel］に新たに作成したレベル（アセットのレベルを直接したのならそのレベル）を設定してください（デフォルトはサンプルのメイン画面になっています）。  
 
 なおデモのように蝋燭間の距離が近いと、近づいた時に消す対象となる蝋燭の数が多くなり、調整しないと操作性が悪くなる恐れがあります。  
 どうしても蝋燭間の距離を近づけたい時は、蝋燭ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCadleVFX.uasset）を開き、エディタ左側の［コンポーネント］タブ内のInteractionComponentを選択し、エディタ右側に表示される［詳細］タブのパラメーターを調整してください。  
@@ -170,16 +180,21 @@ GitHubページ上の緑色の［Code］ボタンを左クリックし、表示�
 ## その他
 
 ### メインメニューの編集
-メインメニューは起動時に表示される画面で、終了もこの画面から行います（Alt+F4キーでも終了可能です）。  
+メインメニューには次の2つの要素が必要です。  
+1. HT_BP_LevelHelper_MainMenu（/Content/HyakuTales/Blueprint/LevelHelper/HT_BP_LevelHelper_MainMenu.uasset） … メインメニューのUI表示などを行っているプログラム
+2. カメラアクター … メインメニューで使われるカメラ（CineCameraActorなど）
+
+メインメニューは起動時に表示される画面で、終了もこの画面から行います（Alt+F4キーのショートカットでメイン画面からでも終了は可能）。  
 ご自身の百物語配信で使用する場合など、メインメニューのカスタマイズが不要なら編集は不要です。  
 
-メインメニュー（/Content/HyakuTales/Level/HT_Level_MainMenu.umap）は次のアクターで構成されています。  
-* Plane（床）
-* 蝋燭×6本
+サンプルのメインメニュー（/Content/HyakuTales/Level/HT_Level_MainMenu.umap）は次のアクターで構成されています。  
 * HT_BP_LevelHelper_MainMenu（メインメニューのUI表示などを行っているプログラム）
 * CineCameraActor（蝋燭6本を写すカメラ）
+* Plane（床）
+* 蝋燭×6本
 
-お好みで床を削除したり3Dモデルや照明などを配置したり、カメラを移動・回転したりしてください。  
+メイン画面と同様に、アセットストアで入手したアセットが用意したレベルを使っても良いですし、サンプルのメインメニューレベルを編集しても良いです。  
+アセットストアで入手したアセットのレベルを使用する場合は、GameModeをHT_BP_GameMode_MainMenuブループリント（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_MainMenu.uasset）に設定してください。あわせて、レベル上のHT_BP_LevelHelper_MainMenuアクターを選択した状態でエディタ右側の［詳細］タブの［デフォルト > Camera］にレベル上のカメラアクターを設定してください（Camera項目の右側にあるスポイト風アイコンを左クリックした後にレベル上のカメラアクターを左クリックして設定可能）。  
 
 サンプルではHT_BP_LevelHelper_MainMenuが蝋燭6本を参照しているため、蝋燭を削除する場合はその前に、HT_BP_LevelHelper_MainMenuを選択し［デフォルト > Candles］変数の右側にある削除ボタン（ゴミ箱アイコン）を左クリックして参照を解除してください。  
 ちなみにこの蝋燭6本の参照は、メインメニュー表示中にメニュー内のボタンのホバー状態に応じて点灯する蝋燭が変化するギミックに使用しているだけです。  
