@@ -41,6 +41,7 @@ Unreal Engineやゲーム制作・プログラミングの初心者という方�
 - [ウォーキングシミュレーターゲームテンプレート](#ウォーキングシミュレーターゲームテンプレート)
   - [GameInstance](#gameinstance)
   - [GameMode](#gamemode)
+  - [コンテニュー機能](#コンテニュー機能)
 - [共通システム](#共通システム)
   - [インタラクション](#インタラクション)
   - [ダイアログ（ボイス対応会話システム）](#ダイアログボイス対応会話システム)
@@ -365,6 +366,24 @@ UI専用レベルであればプレイヤーキャラクターは不要なため
 のような感じになるかなと思われます（ムービーシーン専用レベルを作る場合はUI用GameModeを使うかもしれません）。
 
 全てキャラクターが歩く用GameModeにして、UI用レベルの時はカメラを固定にし、プレイヤーキャラクターの入力を無効化（DisableInput）するといったこともできます。  
+
+## コンテニュー機能
+コンテニューの有無をWST_BP_GameInstanceブループリント（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BP_GameInstance.uasset）のIsContinue関数（WST_BPI_GameInstance_MainGameブループリントインターフェース）で管理しています。  
+デフォルトでは何もチェックしていないため、常にFalse（コンテニュー無し）となっています。  
+
+作るゲームによってコンテニュー可能な場合は、この関数内でコンテニューの有無をチェックして、コンテニューがある時はTrueを返します。  
+サンプルとして百物語カウンター用のHT_BP_GameInstanceブループリント（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）のIsContainue関数では、MainGameSaveGameブループリント内のNumber値（消した蝋燭の数）をチェックし、1～99本の場合はコンテニュー有としています。  
+
+コンテニュー機能はリストア処理（取得済みのアイテムが未取得扱いや解錠したはずのドアが施錠されたままなど）が不具合リスクになるのですが、逆にスタックやUIバグなどにより進行不能になった時の救済処置にもなるので分岐が無いゲームでもコンテニュー対応にはメリットもあります。  
+しかしゲーム開発初心者の内は技術的な負担も大きいでしょうから、プレイ時間が数時間程度のゲーム内容であれば、スタックやUIバグなどを重点的に行ってコンテニュー未対応でも悪くないと思います（結果的にバグの抑制になるメリットがある）。  
+
+### メインメニューのコンテニューボタン
+メインメニューWidget（/Content/WalkingSimTpl/UI/MainMenu/WST_WBP_MainMenu.uasset）のコンテニューボタン（/Content/WalkingSimTpl/UI/MainGame/WST_WBP_Button_Start_Continue.uasset）は、ボタン側の処理でGameInstanceのIsContainue関数をチェックしてコンテニューが無い時は無効化しています。  
+ゲームとしてコンテニューに対応しない場合は、メインメニューWidget内のコンテニューボタンを非表示（Visibility=Collapsed）にしてください（メニュー内でコンテニューボタンへの参照があるため、削除する場合は手間が増えます）。  
+
+なお新規プレイボタン・コンテニューボタンのどちらが押された場合でも、GameInstanceのOpenMainLevelイベント（WST_BPI_GameInstance_MainGameブループリントインターフェース）が呼ばれます。  
+NewGame引数がTrueの時は、MainGameSaveGameの初期化処理（ResetMainGameSaveGameイベント）を実行してからメインレベルを開きます。  
+そのため、メインレベルではGameInstanceのIsContainue関数がTrueの時はリストア処理の実装が必要です。もし進行状況によってレベルが異なる場合は、進行状況に応じてあらかじめ開くレベルを変更すると良いでしょう。  
 
 ---
 
