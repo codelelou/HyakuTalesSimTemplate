@@ -50,6 +50,7 @@ Unreal Engineやゲーム制作・プログラミングの初心者という方�
 - [応用編](#応用編)
   - [国際化（多言語対応）](#国際化多言語対応)
   - [操作方法のキー設定](#操作方法のキー設定)
+  - [環境設定画面のカスタマイズ](#環境設定画面のカスタマイズ)
   - [ゲームの画質について](#ゲームの画質について)
   - [サウンドの種類の設定方法](#サウンドの種類の設定方法)
   - [フォント](#フォント)
@@ -415,9 +416,6 @@ UI専用レベルであればプレイヤーキャラクターは不要なため
 ダイアログシステムの使い方のサンプルが蝋燭マネージャー（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_CandleManager.uasset）になっています。  
 GetPlayerControllerノードからGetDialogue関数（WST_BPI_PlayerControllerブループリントインターフェース）を呼び、ReturnValueピンからShowDialogue関数（Lelool_BPI_Dialogueブループリントインターフェース）に表示したいダイアログのDataTableを引数として渡して呼びます。  
 
-この時、Auto引数にチェックを入れると自動再生となりプレイヤーキャラクターは動ける状態のままになります。  
-ただしセリフ中にトリガーを踏んだりインタラクションしたりしてイベントが発生すると不具合の原因になる恐れがあるため、自動再生する場合は注意しましょう（デフォルトではダイアログ表示中はインタラクト不可にしてはいます）。  
-
 またGetDialogue関数からOnChangedイベントディスパッチャー（表示するDataTableの行が変わった時に呼ばれる）やOnClosedイベントディスパッチャー（ダイアログが閉じた時に呼ばれる）をバインドでき、会話中にイベントを起こしたり会話終了時にイベントを起こすことも可能です。  
 このダイアログシステムは選択肢の表示には対応していませんが、OnClosedイベントディスパッチャーなどで特定のダイアログを閉じた際に選択肢UIを表示するなどで対応可能です。  
 
@@ -425,6 +423,29 @@ GetPlayerControllerノードからGetDialogue関数（WST_BPI_PlayerController�
 話し手（Speaker）の国際化（多言語）対応にはWST_WBP_Dialogueウィジットブループリント（/Content/WalkingSimTpl/UI/Dialogue/WST_WBP_Dialogue.uasset）に話し手名のマッピングとローカリゼーションダッシュボードの作業が必要です。  
 
 なおダイアログのデータべテーブルはWST_Struct_Dialogue構造体でなくても自作の構造体でも可能ですが、WST_WBP_Dialogueウィジットブループリントを自作構造体用に変更する必要があります。  
+
+### ダイアログの自動再生
+ShowDialogue関数（Lelool_BPI_Dialogueブループリントインターフェース）の［Auto］引数にチェックを入れると、自動再生となりプレイヤーキャラクターは動ける状態のままでセリフが表示されます。  
+
+ただしセリフ中にトリガーを踏んだりインタラクションしたりしてイベントが発生すると不具合の原因になる恐れがあるため、自動再生する場合は注意しましょう（デフォルトではダイアログ表示中はインタラクト不可にしてはいます）。  
+基本的には一言二言程度のセリフに向いています。例えば、建物や部屋に初めて入った時に「汚いなぁ」とか「臭いなぁ」とか、演出の物音を再生させた時に「どっかで物音がしたような？」のように聞き逃してしまったプレイヤーにもゲーム内の変化を少しでも伝わるようにするような使い方になるかと思います。  
+
+### ダイアログの戻る機能
+複数ページのテキストの時に表示した前ページに戻れるかどうかの設定は、WST_BP_DialogueComponentブループリント（/Content/WalkingSimTpl/Component/Dialogue/WST_BP_DialogueComponent.uasset）の［デフォルト > EnableBack］で切替可能です。  
+誤操作で次のページに進んでしまって読み逃すこともあるので、特に理由が無ければ戻る機能は有効のままで良いかと思います。  
+
+### ダイアログのタイプライター演出
+テキストを表示する時に1文字ずつ表示（タイプライター演出）するか一度にまとめて表示するかの設定は、WST_BP_DialogueComponentブループリント（/Content/WalkingSimTpl/Component/Dialogue/WST_BP_DialogueComponent.uasset）の［Typewriter > EnableTypewriter］で切替可能です。  
+
+なおタイプライター演出中にコントローラーのBボタンもしくはキーボードのスペースキーを押すと、タイプライター演出をスキップして残りのテキストがまとめて表示されます。  
+このキー設定はLelool_IMC_Dialogue（/Content/Lelool/Input/Dialogue/Lelool_IMC_Dialogue.uasset）の「Lelool_IA_Dialogue_SkipTypewriter」で行っています。  
+
+### ダイアログUIの設定
+ダイアログで使用するUI（UserWidget）はWST_BP_DialogueComponentブループリント（/Content/WalkingSimTpl/Component/Dialogue/WST_BP_DialogueComponent.uasset）の［ウィジェット > UserWidgetClass］で設定できます。  
+
+デフォルト設定のサンプルのWST_WBP_Dialogueウィジェット（/Content/WalkingSimTpl/UI/Dialogue/WST_WBP_Dialogue.uasset）を参考に、見た目を変えたり、ダイアログ用データテーブルの書式（構造体）の変更に対応させたり可能です。  
+ダイアログUIを自作する場合はWST_WBP_Dialogueウィジェットを直接編集するか複製して編集するのが便利かと思います。  
+新規で作成する場合はWST_WBP_Dialogue_Baseウィジェット（/Content/WalkingSimTpl/UI/Dialogue/WST_WBP_Dialogue_Base.uasset）かLelool_WBP_Dialogue_Baseウィジェット（/Content/Lelool/Component/Dialogue/Lelool_WBP_Dialogue_Base.uasset）の子クラスとして作成してください（タイプライター演出など色々な共通処理を実装済みのため）。  
 
 ## コントローラー振動
 ゲームを主にキーボード&マウスでプレイしていると実感がないかもしれませんが、個人の感想になりますが例えばモンスターハンターの太刀であれば見切りの際にコントローラー振動があり、振動機能のないコントローラーでプレイすると爽快感などの面で物足りなさを感じます。  
