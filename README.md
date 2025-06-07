@@ -40,8 +40,11 @@ Unreal Engineやゲーム制作・プログラミングの初心者という方�
 - [フォルダ構成（プログラムなどメインのコンテンツフォルダ）](#フォルダ構成プログラムなどメインのコンテンツフォルダ)
 - [ウォーキングシミュレーターゲームテンプレート](#ウォーキングシミュレーターゲームテンプレート)
   - [GameInstance](#gameinstance)
+    - [環境設定SaveGame](#環境設定savegame)
+    - [MainGame用SaveGame](#maingame用savegame)
+    - [コンテニュー機能](#コンテニュー機能)
+    - [GameInstance用ブループリントインターフェース](#gameinstance用ブループリントインターフェース)
   - [GameMode](#gamemode)
-  - [コンテニュー機能](#コンテニュー機能)
 - [共通システム](#共通システム)
   - [インタラクション](#インタラクション)
   - [ダイアログ（ボイス対応会話システム）](#ダイアログボイス対応会話システム)
@@ -324,6 +327,9 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 メインのプログラムは極力Leloolフォルダの共通プログラムファイルで行っているため、このゲームテンプレートをアップデートする際はこの共通プログラムファイルがメインになります。  
 そのためLeloolフォルダの編集を避けることで、ゲームテンプレートのアップデートを行う際のマージの手間とリスクの抑制が期待できます。  
 
+ただし操作の入力キーを変更する場合は、Leloolフォルダ直下のInputフォルダ内にあるInputMappingContextデータアセットを編集することにはなるかと思います（アップデート後に入力キーを再設定してください）。  
+もしくはInputMappingContextデータアセットを指定している個所で、独自に作成したInputMappingContextデータアセットを指定します（原則としてサンプルプログラムではInputMappingContextデータアセットをクラス変数化しているはずなので、子クラスなどでオーバーライドできるかと思います）。  
+
 なお百物語カウンターではWalkingSimTplフォルダを編集していませんが、これは手間や不便が多くサンプル用であえて行っているだけで、オリジナルゲーム制作ではWalkingSimTplフォルダをメインフォルダにすることを推奨します。  
 
 ---
@@ -349,6 +355,47 @@ GameInstanceはゲーム起動時に呼ばれ、そのままゲーム終了時�
 
 ただこのゲームテンプレートはあくまでウォーキングシミュレーターゲームのベースとなるテンプレートであり、Unreal Engineでのゲーム制作を広く・深く解説するのを目的としていないため、詳しい解説は行いません。  
 
+### 環境設定SaveGame
+WST_BP_GameInstanceブループリントのクラス変数（クラスのデフォルト > 詳細タブ）で環境設定SaveGameの設定が可能です。  
+* SettingsSlotName: 環境設定のセーブファイル名として使用されます（Windows OSの場合でOSなどによって仕様が異なる場合があります）。
+* SettingsSaveGameClass: 使用する環境設定SaveGame用ブループリントクラスを設定します。
+* SoundMix: 音量設定で使用するサウンドクラスミックスを設定します。
+
+SettingsSaveGameClassをゲーム公開後に変更する場合はSettingsSlotNameも変更した方が良いかもしれません（公開前の開発中であれば、開発環境のセーブファイルを削除すれば良いです）。  
+Unreal Engineの仕様なのか、セーブファイルが既に存在する場合はSettingsSaveGameClassを変更しても、セーブファイルが作成された時点で設定されていたSettingsSaveGameClassが使用される現象を確認しました（Windowsでの開発環境で確認しました）。  
+なおSettingsSlotNameを変更すると実質的にそのセーブファイルを削除したのと同じとなるため、アップデート情報などに環境設定がリセットされる旨の通知を検討してください。  
+
+### MainGame用SaveGame
+WST_BP_GameInstanceブループリントのクラス変数（クラスのデフォルト > 詳細タブ）でMainGame用SaveGameの設定が可能です。  
+* InGameSaveGameSlotName: MainGame用セーブファイル名として使用されます。
+* InGameSaveGameClass: 使用するMainGame用SaveGameブループリントクラスを設定します。
+
+サンプル（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）ではHT_BP_SaveGame_HyakuTalesブループリント（/Content/HyakuTales/Blueprint/SaveGame/HT_BP_SaveGame_HyakuTales.uasset）を設定しており、消した蝋燭の数やカウンターの表示位置などを記録できるようにしています。  
+
+また環境設定SaveGameと同様に、ゲームを公開後にInGameSaveGameClassを変更する場合はInGameSaveGameSlotNameも変更する必要があります。  
+ただ管理するデータによってはクリア情報などもリセットされてしまうため、可能であればInGameSaveGameClassを変更せず、設定しているSaveGameブループリントに項目を追加して対応することを推奨します。  
+一応は中級者以上向けにはなりますが、InGameSaveGameSlotNameを変更しても、変更前のInGameSaveGameSlotNameでセーブデータを取得し、それを新しい変更後のSaveGameブループリントにマージし、変更前のInGameSaveGameSlotNameのセーブファイルを削除するという対応も可能ではあります（詳しい説明が難しいため、自力で解決してください）。  
+
+### コンテニュー機能
+コンテニューの有無をWST_BP_GameInstanceブループリント（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BP_GameInstance.uasset）のIsContinue関数（WST_BPI_GameInstance_MainGameブループリントインターフェース）で管理しています。  
+デフォルトでは何もチェックしていないため、常にFalse（コンテニュー無し）となっています。  
+
+作るゲームによってコンテニュー可能な場合は、この関数内でコンテニューの有無をチェックして、コンテニューがある時はTrueを返します。  
+サンプルとして百物語カウンター用のHT_BP_GameInstanceブループリント（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）のIsContainue関数では、MainGameSaveGameブループリント内のNumber値（消した蝋燭の数）をチェックし、1～99本の場合はコンテニュー有としています。  
+
+コンテニュー機能はリストア処理（取得済みのアイテムが未取得扱いや解錠したはずのドアが施錠されたままなど）が不具合リスクになるのですが、逆にスタックやUIバグなどにより進行不能になった時の救済処置にもなるので分岐が無いゲームでもコンテニュー対応にはメリットもあります。  
+しかしゲーム開発初心者の内は技術的な負担も大きいでしょうから、プレイ時間が数時間程度のゲーム内容であれば、スタックやUIバグなどを重点的に行ってコンテニュー未対応でも悪くないと思います（結果的にバグの抑制になるメリットがある）。  
+
+### GameInstance用ブループリントインターフェース
+GameInstance用ブループリントインターフェースがあります。  
+* Lelool_BPI_GameInstance_Settings（/Content/Lelool/Blueprint/GameInstance/Lelool_BPI_GameInstance_Settings.uasset）
+* WST_BPI_GameInstance_MainGameブループリントインターフェース（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BPI_GameInstance_MainGame.uasset）
+
+これらのインターフェースにより、ActorブループリントやWidgetブループリントなどｄGameInstanceを取得できるGetGameInstanceノードの返り値をキャスト（Cast to HT_BP_GameInstance）することなく、環境設定SaveGameを取得したりメインメニューを開いたりすることができます（インターフェースの使い方がわからないならキャストしても良いです）。  
+
+Lelool_BPI_GameInstance_Settingsブループリントインターフェースでは、環境設定SaveGameの取得・セーブ・リセットなどが可能です。  
+WST_BPI_GameInstance_MainGameブループリントインターフェースでは、メインメニューを開いたりMainGame用SaveGameの取得・セーブ・リセットなどが可能です。  
+
 ## GameMode
 Unreal Engineではレベル毎に何かしらのGameModeブループリントを設定することになり、レベル毎に使用するPlayerControllerやPlayerCharacterなどのクラスを設定します。  
 UI専用レベルであればプレイヤーキャラクターは不要なため、プレイヤーキャラクタークラスを設定していないGameModeを使うのがベターです。  
@@ -367,16 +414,6 @@ UI専用レベルであればプレイヤーキャラクターは不要なため
 のような感じになるかなと思われます（ムービーシーン専用レベルを作る場合はUI用GameModeを使うかもしれません）。
 
 全てキャラクターが歩く用GameModeにして、UI用レベルの時はカメラを固定にし、プレイヤーキャラクターの入力を無効化（DisableInput）するといったこともできます。  
-
-## コンテニュー機能
-コンテニューの有無をWST_BP_GameInstanceブループリント（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BP_GameInstance.uasset）のIsContinue関数（WST_BPI_GameInstance_MainGameブループリントインターフェース）で管理しています。  
-デフォルトでは何もチェックしていないため、常にFalse（コンテニュー無し）となっています。  
-
-作るゲームによってコンテニュー可能な場合は、この関数内でコンテニューの有無をチェックして、コンテニューがある時はTrueを返します。  
-サンプルとして百物語カウンター用のHT_BP_GameInstanceブループリント（/Content/HyakuTales/Blueprint/GameInstance/HT_BP_GameInstance.uasset）のIsContainue関数では、MainGameSaveGameブループリント内のNumber値（消した蝋燭の数）をチェックし、1～99本の場合はコンテニュー有としています。  
-
-コンテニュー機能はリストア処理（取得済みのアイテムが未取得扱いや解錠したはずのドアが施錠されたままなど）が不具合リスクになるのですが、逆にスタックやUIバグなどにより進行不能になった時の救済処置にもなるので分岐が無いゲームでもコンテニュー対応にはメリットもあります。  
-しかしゲーム開発初心者の内は技術的な負担も大きいでしょうから、プレイ時間が数時間程度のゲーム内容であれば、スタックやUIバグなどを重点的に行ってコンテニュー未対応でも悪くないと思います（結果的にバグの抑制になるメリットがある）。  
 
 ### メインメニューのコンテニューボタン
 メインメニューWidget（/Content/WalkingSimTpl/UI/MainMenu/WST_WBP_MainMenu.uasset）のコンテニューボタン（/Content/WalkingSimTpl/UI/MainGame/WST_WBP_Button_Start_Continue.uasset）は、ボタン側の処理でGameInstanceのIsContainue関数をチェックしてコンテニューが無い時は無効化しています。  
