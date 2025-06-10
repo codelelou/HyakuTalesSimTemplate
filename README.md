@@ -3,14 +3,13 @@
 
 サンプルプログラムはFPS視点で3D空間内の100本の蝋燭を歩いて消す百物語カウンターになっています。  
 メインメニューや環境設定、コンテニュー、ポーズメニュー、インタラクト（蝋燭を消す）、ダイアログ（会話機能）、アナログ時計サンプルプログラムなどの共通システムがあらかじめ用意されています。  
+このゲームテンプレートはUnreal Engine 5でのウォーキングシミュレーターベースの3Dゲームを作る際のベースとして使うことを想定して作っています（自作のFPS視点3Dホラーゲームのベースとして作りました）。  
 
-このゲームテンプレートはUnreal Engine 5でのウォーキングシミュレーターベースの3Dゲームを作る際のベースとして使うことを想定して作っています（自分のFPS視点のホラーゲーム開発用に作りました）。  
 Unreal Engineやゲーム制作・プログラミングの初心者という方は、過去に公開したUnreal Engine 5プロジェクトファイルの方がより簡単かと思いますので、練習として先にお試しいただくと良いかもしれません。  
-
 * [Text3DGuesser](https://github.com/codelelou/HyakuTales) （Unreal Engine 5のインストールと配布用ファイルの作成練習用のゲームテンプレート）
 * [Findloople](https://github.com/codelelou/Findloople) （プログラミング不要で8番ライクゲームも作れるゲームテンプレート）
 
-なお共通システム・共通プログラムは『HyakuTalesSimTemplate』のものが最新のものとなっており、かつアップデートにより互換性がなくなっているものがあります。  
+なお共通システム・共通プログラムはこのゲームテンプレート『HyakuTalesSimTemplate』が最新のものとなっており、過去のゲームテンプレートとは互換性はありません。  
 もし新規でオリジナルゲームを開発する際のベースとしてこれらのテンプレートを使用される場合は、『HyakuTalesSimTemplate』の使用がベストかと思います。  
 
 どのテンプレートも共通して環境設定で画質やマウス感度などを設定できるようになっており、初心者でも比較的短期間でゲームの公開までを体験できるかと思います。  
@@ -18,8 +17,8 @@ Unreal Engineやゲーム制作・プログラミングの初心者という方�
 またUnreal Engine 5のライセンス料に関しては、作ったゲームを販売した場合に年間売上100万ドル（1ドル150円換算で1.5億円）を超えた分に対して5％と、大半のゲームはライセンス料が発生しない（無料で使用できる）かと思われます。  
 
 # デモ
-デモとして『[百物語シム](https://codelelou.booth.pm/items/6949715)』を作成しました。  
-このテンプレートでどのような機能を実装できるのか把握するのに便利かと思います。  
+このゲームテンプレートでデモとして『[百物語シム](https://codelelou.booth.pm/items/6949715)』を作成しました。  
+どのような機能が用意されているのかを把握するのに便利かと思います。  
 
 なおゲーム開発に興味が無くても、百物語配信などでお使いいただけます（配信許可に関してはデモのリンク先に記載しています）。  
 百物語配信向けにオリジナル百物語カウンターの作成にご利用いただくことも大歓迎です（Unreal Engineはゲームエンジンですが、映画やアニメ、自動車メーカーなどゲーム以外でも多くの使用実績があります）。  
@@ -112,23 +111,23 @@ Assetsの「Souce code (zip)」か「Souce code (tar.gz)」のどちらか一方
 ---
 
 # オリジナル百物語カウンターの作り方
-このゲームテンプレートのサンプルプログラムが百物語カウンターになっており、プログラミング不要で3Dモデルの差替え・追加削除でオリジナル百物語カウンターを作ることができます。  
+このゲームテンプレートのサンプルプログラムが百物語カウンターになっており、プログラミング不要で3Dモデルの差替え・追加削除によるオリジナル百物語カウンター作成が可能です。  
 3Dモデリングができなくても、アセットストアなどで入手した3Dモデルを使うことができますし、Unreal EngineのRealityCaptureなどスマホのカメラなどから3Dモデルを生成することもできます。  
 
-[デモ用に作った百物語カウンター](https://codelelou.booth.pm/items/6949715)では3Dモデリングは行っておらず、アセットストアで入手した和風環境と蝋燭のアセットを使って作成しました。  
+[デモ用百物語カウンター](https://codelelou.booth.pm/items/6949715)では3Dモデリングは行っておらず、アセットストアで入手した和風環境と蝋燭のアセットを使って作成しました。  
 * [和風環境: Japanese Farmhouse](https://www.fab.com/ja/listings/99f75379-1e36-4c6b-bd06-3a9931d48ecf)
 * [蝋燭: Candle VFX](https://www.fab.com/ja/listings/98e82577-7a94-4a30-b5b4-b5a2d6073061)
 
-ご自身の百物語配信専用にオリジナル版を作るだけなら、「蝋燭」と「メイン画面」の編集だけ良いかと思います（エディタの画面をキャプチャしての配信も可能ですが、エディタは負荷が大きいため[パッケージ化](#パッケージ化配布用exeファイル作成)することを推奨します）。  
-第三者に配布・公開する場合は必要に応じて「その他」を参考に編集を行ってください（特に使用するアセットや素材によってはクレジット表記が必要なため）。  
+ご自身の百物語配信専用にオリジナル版を作るだけなら、「蝋燭」と「（100本の蝋燭の）メイン画面」の編集だけ良いかと思います（エディタの画面をキャプチャしての配信も可能ですが、エディタは開発用の余分の処理負荷もあるため可能なら[パッケージ化](#パッケージ化配布用exeファイル作成)することを推奨します）。  
+第三者に配布・公開する場合は必要に応じて「その他」を参考に編集を行ってください。  
 
 ## 蝋燭の編集
 蝋燭（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_VefectsCandleVFX.uasset）は1つのプログラムになっており、点灯・消灯で見た目が変化するようになっています。  
 
-デモで使用している[蝋燭アセット: Candle VFX](https://www.fab.com/ja/listings/98e82577-7a94-4a30-b5b4-b5a2d6073061)は個人ライセンス（2025年5月24日現在）なら無料で使用できるため、サンプルの蝋燭では簡単なStaticMesh（3Dモデル）やマテリアル（3Dモデルの表面の画像など）などの設定だけで使用できるようにしています。  
-もしこのアセットを使用しない場合は、サンプルとして用意しているシンプルな蝋燭（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Simple.uasset）を参考にカスタマイズしてください。  
+デモで使用している[蝋燭アセット: Candle VFX](https://www.fab.com/ja/listings/98e82577-7a94-4a30-b5b4-b5a2d6073061)は個人ライセンス（2025年6月10日現在）なら無料で使用できるため、サンプルの蝋燭では簡単なStaticMesh（3Dモデル）やマテリアル（3Dモデルの表面の画像など）などの設定だけで使用できるようにしています。  
+もしこのアセットを使用しない場合は、サンプルとして用意しているシンプルな蝋燭（/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_Candle_Simple.uasset）を参考にカスタマイズしてください（この蝋燭アセット用の蝋燭サンプルは複雑なつくりをしているため）。  
 
-この蝋燭アセットはWeb上からでもエディタ上でも入手可能です。  
+Unrealエディタの使い方全般の話になるため詳しくは説明しませんが、この蝋燭アセットはWeb上からでもエディタ上でも入手可能です。  
 エディタで使えるようにUnrealプロジェクトに追加するには、エディタ上部の［ウィンドウ > （コンテンツを取得） > Fab］を左クリックしてFabプラグインを開き、Fabプラグインの検索機能やMy Libraryなどからこの蝋燭をアセットを開き、［Add to Project］ボタンを左クリックします。ダウンロード・追加が完了すれば、「Lelool」フォルダや「WalkingSimTpl」フォルダと並んで「Vefects」フォルダが作成されていると思います。  
 ![Fabプラグインを開いてアセット追加完了までの大まかな流れの図解](https://github.com/user-attachments/assets/186881dc-89d0-427f-80ed-4e28a66a0d37)
 
@@ -148,27 +147,30 @@ Assetsの「Souce code (zip)」か「Souce code (tar.gz)」のどちらか一方
 ［ビューポート］タブから蝋燭の見た目が変わったことを確認できるかと思います。  
 
 なおデモでは消灯時に効果音を鳴らしているのですが、これは［クラスのデフォルト］の［LightsOutSound］変数にサウンドソースを設定しておくことで鳴らせます。  
-デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用していますが、Unreal EngineはMP3ファイル形式に対応していないため、事前にWavファイル形式などに変換しておく必要があります。また追加した[音ファイルの種類を設定](#サウンドの種類の設定方法)することで環境設定での音量調整と連動できます。
+デモでは[効果音ラボの『マッチの火を吹き消す』](https://soundeffect-lab.info/sound/various/various3.html)を使用していますが、Unreal EngineはMP3ファイル形式に対応していないため、事前にWavファイル形式などに変換しておく必要があります。また追加した[音ファイルの種類を設定](#サウンドの種類の設定方法)することで環境設定での音量調整（効果音）と連動できます。  
 
 ![HT_BP_Actor_Candle_VefectsCandleVFXブループリントの編集の図解](https://github.com/user-attachments/assets/25b2fc97-d0f8-4224-8c82-7c67516b310a)
 
 ## メイン画面の編集
 100本の蝋燭が表示される百物語カウンターのメイン画面には次の3つの要素が必要です。  
 1. 蝋燭×100本
-2. HT_BP_Actor_CandleManager(/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_CandleManager.uasset) … 蝋燭を管理するプログラム
-3. PlayerStart … プレイヤーキャラクターがスポーンされる開始位置
+2. HT_BP_Actor_CandleManager(/Content/HyakuTales/Blueprint/Actor/Candle/HT_BP_Actor_CandleManager.uasset): 蝋燭を管理するプログラム
+3. PlayerStart: プレイヤーキャラクターがスポーンされる開始位置
 
-サンプルのメイン画面（/Content/HyakuTales/Level/HT_Level_CandlesSpace.umap）では次のアクターで構成されています（Unreal Engineではレベル上に配置する3Dモデルやライトなどのあらゆるものをアクターと呼びます）ので参考にしてください。  
+参考までにサンプルのメイン画面（/Content/HyakuTales/Level/HT_Level_CandlesSpace.umap）では次のアクターで構成されています（Unreal Engineではレベル上に配置する3Dモデルやライトなどのあらゆるものをアクターと呼びます）。  
 * 蝋燭×100本
-* HT_BP_Actor_CandleManager(蝋燭を管理するプログラム)
-* PlayerStart（プレイヤーキャラクターがスポーンされる開始位置）
-* Plane（床）
-* DirectionalLight（全体を照らす照明）
-* 時計（アナログ時計プログラムのデモ用のため不要なら削除してください）
+* HT_BP_Actor_CandleManager: 蝋燭を管理するプログラム
+* PlayerStart: プレイヤーキャラクターがスポーンされる開始位置
+* Plane: 床
+* DirectionalLight: 全体を照らす照明
+* 時計: アナログ時計サンプル（技術デモ用）
+* HT_BP_Actor_ItemViewer_Sample: アイテムビューアサンプル（技術デモ用）
 
 サンプルのメイン画面を編集する場合は、お好みで床を削除したり3Dモデルや照明などを配置してください。  
 
-ただアセットストアで入手した環境アセットはあらかじめ建物などが組み立て済みのレベルが用意されていることが多く、そのレベルに先程の必要な3つの要素を配置する方が楽かと思います（PlyarStartアクターは予め配置されてることがあります）。
+ただアセットストアで入手した環境アセットはあらかじめ建物などが組み立て済みのレベルが用意されていることが多く、そのレベルに先程の必要な3つの要素を配置する方が楽かと思います（PlyarStartアクターは予め配置されてることがあります）。  
+デモ用の百物語カウンターでは環境アセットのサンプルレベルを利用しています。床や壁など個別の3Dモデルをあらかじめ組み合わせてくれているので便利です。  
+
 もしこのようなアセットのレベルを使用する場合は、そのレベルのGameModeをHT_BP_GameMode_Candlesブループリント（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_Candles.uasset）に変更してください。エディタのレベルビューの右上あたりの［設定］ボタンを左クリックし、［ワールドセッティング］を左クリックして表示される［ワールドセッティング］タブの［GameMode > ゲームモードオーバーライド］に「HT_BP_GameMode_Candles」を設定します。  
 ![メイン画面レベルのGameModeを変更する手順の図解](https://github.com/user-attachments/assets/41cd1f9c-fbdb-4d26-95cc-f86abb3beb9c)
 
@@ -182,25 +184,22 @@ Assetsの「Souce code (zip)」か「Souce code (tar.gz)」のどちらか一方
 * OverridePlayerAngle（インタラクト可能なプレイヤーの視角） = 10（初期値25で、小さいと判定が悪くなり操作性が犠牲になります）
 ![蝋燭アクターのInteractionComponent設定のオーバーライド箇所の図解](https://github.com/user-attachments/assets/408d034a-f1e6-489f-a798-181434bfa09e)
 
-あわせて、デモでは蝋燭ActorBlueprintのInteractionViewArrow（コンポーネントタブ内）の位置を「(X=0.000000,Y=0.000000,Z=70.000000)」に調整しています。  
-このInteractionViewArrowはインタラクト可能なプレイヤーの視角を判定する時の基準なのですが、対象（蝋燭）の位置とプレイヤーキャラクターの身長などで判定が異なるため、参考程度にしてください。  
-
 可能であれば蝋燭の配置を見直し、蝋燭間の距離を広くすることを推奨します。  
 
 ## その他
 
 ### メインメニューの編集
 メインメニューには次の2つの要素が必要です。  
-1. HT_BP_LevelHelper_MainMenu（/Content/HyakuTales/Blueprint/LevelHelper/HT_BP_LevelHelper_MainMenu.uasset） … メインメニューのUI表示などを行っているプログラム
-2. カメラアクター … メインメニューで使われるカメラ（CineCameraActorなど）
+1. HT_BP_LevelHelper_MainMenu（/Content/HyakuTales/Blueprint/LevelHelper/HT_BP_LevelHelper_MainMenu.uasset）: メインメニューのUI表示などを行っているプログラム
+2. カメラアクター: メインメニューで使われるカメラ（CineCameraActorなど）
 
 メインメニューは起動時に表示される画面で、終了もこの画面から行います（Alt+F4キーのショートカットでメイン画面からでも終了は可能）。  
 ご自身の百物語配信で使用する場合など、メインメニューのカスタマイズが不要なら編集は不要です。  
 
 サンプルのメインメニュー（/Content/HyakuTales/Level/HT_Level_MainMenu.umap）は次のアクターで構成されています。  
-* HT_BP_LevelHelper_MainMenu（メインメニューのUI表示などを行っているプログラム）
-* CineCameraActor（蝋燭6本を写すカメラ）
-* Plane（床）
+* HT_BP_LevelHelper_MainMenu: メインメニューのUI表示などを行っているプログラム
+* CineCameraActor: 蝋燭6本を写すカメラ
+* Plane: 床
 * 蝋燭×6本
 
 メイン画面と同様に、アセットストアで入手したアセットが用意したレベルを使っても良いですし、サンプルのメインメニューレベルを編集しても良いです。  
@@ -212,33 +211,22 @@ Assetsの「Souce code (zip)」か「Souce code (tar.gz)」のどちらか一方
 サンプルのメインメニューレベルではHT_BP_LevelHelper_MainMenuが蝋燭6本を参照しているため、これらの蝋燭を削除する場合はその前に、HT_BP_LevelHelper_MainMenuを選択し［デフォルト > Candles］変数の右側にある削除ボタン（ゴミ箱アイコン）を左クリックして参照を解除してください。  
 ちなみにこの蝋燭6本の参照は、メインメニュー表示中にメニュー内のボタンのホバー状態に応じて点灯する蝋燭が変化するギミックに使用しているだけです。  
 
-### 百物語オプションUIの編集
-百物語オプションUI（/Content/HyakuTales/UI/HT_WBP_HyakuTalesOptions.uasset）には3つの項目があります（メインメニュー左側やポーズメニュー下部に表示されます）。  
-- カウンター表示（非表示 or 表示位置）
-- カウンター通知（蝋燭消灯後に画面右上から残りの本数を通知するの設定）
-- 時計（アナログ時計プログラムの技術用デモで、現在時刻にするかホラーゲームなどで使える壊れた表現を行うかの設定）
-
-メイン画面で時計を削除した場合は、時計のテキストと項目を選択して削除してください。  
-削除後に時計が表示されていた余白が気になる場合は、［GridPanel］の［フィル ルール > Row Fill］の［インデックス[2]］を削除すれば良いかと思います。  
-
-編集が終わったらエディタ左上の［コンパイル］ボタンを左クリックしてください。  
-
 ### プロジェクト設定
 エディタ上部の［編集 > プロジェクト設定］を左クリックしてプロジェクト設定を開きます。  
 
-プロジェクト設定の［プロジェクト > 説明］を開き、［Unreal Editorについて > プロジェクト名］と［表示 > プロジェクトが表示されたタイトル］にゲームタイトルに入力します（ゲーム起動時のウィンドウ名に使用されます）。
+プロジェクト設定の［プロジェクト > 説明］を開き、［Unreal Editorについて > プロジェクト名］と［表示 > プロジェクトが表示されたタイトル］にゲームタイトルに入力します（ゲーム起動時のウィンドウ名に使用されます）。  
 
-なお、［Unreal Editorについて > プロジェクト名］はWindowsのタスクマネージャーのアプリの表示で影響があるようです。
-他の項目は特に変更しなくても問題ないかもしれませんが、［Unreal Editorについて > プロジェクトバージョン］が未入力だとパッケージ化の際などにエラーが発生し失敗するようです。
+なお、［Unreal Editorについて > プロジェクト名］はWindowsのタスクマネージャーのアプリの表示で影響があるようです。  
+他の項目は特に変更しなくても問題ないかと思いますが、［Unreal Editorについて > プロジェクトバージョン］が未入力だとパッケージ化時にエラーが発生し失敗するようです。  
 
-#### MegaLight
+#### MegaLights
 プロジェクト設定の［エンジン > Rendering > 直接ライティング > MegaLight］にチェックを入れると、パフォーマンス（FPS値）の向上が期待できます。  
-従来は大量のライトを配置（サンプルの蝋燭は1本ずつにライトがあるため、100個以上のライトを配置していることになります）すると大幅なパフォーマンスの低下の原因となっていましたが、MegaLightは効率的に大量のライトを処理できるようになります。  
+従来は大量のライトを配置（サンプルの蝋燭は1本ずつにライトがあるため、100個以上のライトを配置していることになります）すると大幅なパフォーマンスの低下の原因となっていましたが、MegaLightsは効率的に大量のライトを処理できるようになります。  
 
-ただしMegaLightはUnreal Engineの実験的機能で、現時点では製品版での使用は非推奨であり、特にオリジナル百物語カウンターの販売する予定であれば注意してください（禁止されているわけではありません）。  
-特にMegaLightはUnreal Engine 5.5でリリースされた新しい機能のため、より慎重な判断が必要です。  
+ただしMegaLightsはUnreal Engineの実験的機能で、現時点では製品版での使用は非推奨であり、特にオリジナル百物語カウンターの販売する予定であれば注意してください（禁止されているわけではありません）。  
+特にMegaLightsはUnreal Engine 5.5でリリースされた新しい機能のため、より慎重な判断が必要です。  
 
-なおデモではMegaLightを有効にしています。  
+デモ用百物語カウンターではメインメニューやポーズメニューからMegaLightsのOn/Offの切替ができるようになりますのでお試しください。  
 
 ### プロジェクトデータ データテーブル
 メインメニューやクレジット表記などに使用するゲームタイトルやバージョン情報、著作権表示などをまとめてプロジェクトデータとしてデータテーブルファイルで管理しています（実際に使用されるデータテーブルは［プロジェクト設定 > プロジェクト > マップ&モード > GameInstance > ゲームインスタンス］で指定されたGameInstanceブループリントのProjectDataTable変数で指定されたデータテーブルになります）。  
@@ -267,7 +255,7 @@ UnrealEngineCredit/TemplateCredit/OtherCreditsに関しては、メインメニ�
 メインメニューの［インフォメーション］ボタンで表示される内容は、インフォメーションコンテンツ（/Content/WalkingSimTpl/UI/Info/WST_WBP_Info_Content.uasset）のものになり、ゲームの概要タブとクレジットタブに分かれたUIになっています。  
 
 概要タブに関しては必要に応じて、［デザイナー］の［階層］タブの［SummaryRichTextBlock］を選択し、右側に表示される［詳細］タブの［コンテンツ > Text］を編集してください。  
-なおクレジットタブに関しては基本的に編集は禁止です。  
+なおクレジットタブに関しては基本的に編集しないようにしてください（[プロジェクトデータ データテーブル](#プロジェクトデータ データテーブル)の設定内容が表示されるようになっています）。  
 
 ---
 
@@ -319,10 +307,10 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 ---
 
 # フォルダ構成（プログラムなどメインのコンテンツフォルダ）
-* HyakuTales … 百物語カウンターの本体（ファイル名は原則として「HT_」ではじまるように統一しています）
-* Lelool … 共通プログラムファイルで可能な限り編集は避けることを推奨（ファイル名は原則として「Lelool_」ではじまるように統一しています）
-* Localization … 国際化ファイルで直接変更非推奨（Unreal Engine標準のローカライゼーションダッシュボードが生成するフォルダ・ファイル）
-* WalkingSimTpl … ウォーキングシミュレーターゲームのテンプレート（ファイル名は原則として「WST_」ではじまるように統一しています）
+* HyakuTales: 百物語カウンターの本体（ファイル名は原則として「HT_」ではじまるように統一しています）
+* Lelool: 共通プログラムファイルで可能な限り編集は避けることを推奨（ファイル名は原則として「Lelool_」ではじまるように統一しています）
+* Localization: 国際化ファイルで直接変更非推奨（Unreal Engine標準のローカライゼーションダッシュボードが生成するフォルダ・ファイル）
+* WalkingSimTpl: ウォーキングシミュレーターゲームのテンプレート（ファイル名は原則として「WST_」ではじまるように統一しています）
 
 メインのプログラムは極力Leloolフォルダの共通プログラムファイルで行っているため、このゲームテンプレートをアップデートする際はこの共通プログラムファイルがメインになります。  
 そのためLeloolフォルダの編集を避けることで、ゲームテンプレートのアップデートを行う際のマージの手間とリスクの抑制が期待できます。  
@@ -330,15 +318,12 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 ただし操作の入力キーを変更する場合は、Leloolフォルダ直下のInputフォルダ内にあるInputMappingContextデータアセットを編集することにはなるかと思います（アップデート後に入力キーを再設定してください）。  
 もしくはInputMappingContextデータアセットを指定している個所で、独自に作成したInputMappingContextデータアセットを指定します（原則としてサンプルプログラムではInputMappingContextデータアセットをクラス変数化しているはずなので、子クラスなどでオーバーライドできるかと思います）。  
 
-なお百物語カウンターではWalkingSimTplフォルダを編集していませんが、これは手間や不便が多くサンプル用であえて行っているだけで、オリジナルゲーム制作ではWalkingSimTplフォルダをメインフォルダにすることを推奨します。  
+なおサンプルの百物語カウンターではWalkingSimTplフォルダを編集していませんが、これはウォーキングシミュレーターゲームのテンプレートをプレーンな状態のままにするためです。  
+オリジナルゲーム制作で使用する場合はWalkingSimTplフォルダをメインの作業フォルダにし、既存ファイルも必要に応じて編集・削除すると良いかと思います（フォルダ名の変更は可能ですが、ファイル参照などに影響がでることもあるのであえて「WalkingSimTpl」のままの方がトラブルは少ないかもしれません）。  
 
 ---
 
 # ウォーキングシミュレーターゲームテンプレート
-サンプルプログラムは百物語カウンターになっていますが、ベースはウォーキングシミュレーターゲームです。  
-
-もし百物語カウンター以外のウォーキングシミュレーターベースのゲームなどを作るような場合は、WalkingSimTplフォルダをそのまま使用・編集・ファイル追加すると便利かと思います。  
-HyakuTalesフォルダに関しては削除しても構いません（アナログ時計のサンプルプログラムなどを使う場合は、WalkingSimTplフォルダに移動すると良いでしょう）。  
 
 ## GameInstance
 GameInstanceはゲーム起動時に呼ばれ、そのままゲーム終了時まで使われます（レベルやGameMode、PlayerController、PlayerCharacterなどは、レベルが変わる度に破棄・読込が行われます）。  
@@ -347,9 +332,9 @@ GameInstanceはゲーム起動時に呼ばれ、そのままゲーム終了時�
 エディタ上部の［編集 > プロジェクト設定］を左クリックしてプロジェクト設定を開き、［プロジェクト > マップ&モード > GameInstance > ゲームインスタンス］にWST_BP_GameInstance（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BP_GameInstance.uasset）を設定して変更できます。  
 
 そしてWST_BP_GameInstanceブループリントを開き、エディタ上部の［クラスのデフォルト］ボタンを左クリックし、［詳細］タブの各項目を必要に応じて編集してください。  
-* MainMenuLevel（メインメニューレベルを設定する）
-* MainLevel（メインレベルを設定する）
-* ProjectDataTable（メインメニューの著作権表記や、インフォメーションのクレジット表記の情報をまとめたデータテーブルを設定する）
+* MainMenuLevel（メインメニューレベルを設定する）  
+* MainLevel（メインレベルを設定する）  
+* ProjectDataTable（メインメニューの著作権表記や、インフォメーションのクレジット表記の情報をまとめたデータテーブルを設定する）  
 
 サンプルではMainLevelは1つしか設定できませんが、メインメニューレベルとメインレベルの2つだけでは足りない場合は、このGameInstanceに他のレベルを開く処理（OpenLevel）を実装します（その場合はレベルファイルの変数化は必須ではありません）。  
 
@@ -361,9 +346,11 @@ WST_BP_GameInstanceブループリントのクラス変数（クラスのデフ�
 * SettingsSaveGameClass: 使用する環境設定SaveGame用ブループリントクラスを設定します。
 * SoundMix: 音量設定で使用するサウンドクラスミックスを設定します。
 
-SettingsSaveGameClassをゲーム公開後に変更する場合はSettingsSlotNameも変更した方が良いかもしれません（公開前の開発中であれば、開発環境のセーブファイルを削除すれば良いです）。  
-Unreal Engineの仕様なのか、セーブファイルが既に存在する場合はSettingsSaveGameClassを変更しても、セーブファイルが作成された時点で設定されていたSettingsSaveGameClassが使用される現象を確認しました（Windowsでの開発環境で確認しました）。  
+もしSettingsSaveGameClassをゲーム公開後に変更する場合はSettingsSlotNameも変更した方が良いかもしれません（公開前の開発中であれば、開発環境のセーブファイルを削除すれば良いです）。  
+セーブファイルが既に存在する場合はSettingsSaveGameClassを変更しても、セーブファイルが作成された時点で設定されていたSettingsSaveGameClassが使用されるようです。  
 なおSettingsSlotNameを変更すると実質的にそのセーブファイルを削除したのと同じとなるため、アップデート情報などに環境設定がリセットされる旨の通知を検討してください。  
+
+ロードしたセーブデータが旧SaveGameClassであれば新SaveGameClassにマージすることも可能ですが、実装の手間が多くバグの原因になる恐れもあり、可能な限りゲームリリース後のSaveGameClassの変更は避けて、そのSaveGameClassへの項目追加で対応しましょう（そもそもゲームリリース後にSaveGameClassを変更することは極めて稀なケースかと思います）。  
 
 ### MainGame用SaveGame
 WST_BP_GameInstanceブループリントのクラス変数（クラスのデフォルト > 詳細タブ）でMainGame用SaveGameの設定が可能です。  
@@ -374,7 +361,6 @@ WST_BP_GameInstanceブループリントのクラス変数（クラスのデフ�
 
 また環境設定SaveGameと同様に、ゲームを公開後にInGameSaveGameClassを変更する場合はInGameSaveGameSlotNameも変更する必要があります。  
 ただ管理するデータによってはクリア情報などもリセットされてしまうため、可能であればInGameSaveGameClassを変更せず、設定しているSaveGameブループリントに項目を追加して対応することを推奨します。  
-一応は中級者以上向けにはなりますが、InGameSaveGameSlotNameを変更しても、変更前のInGameSaveGameSlotNameでセーブデータを取得し、それを新しい変更後のSaveGameブループリントにマージし、変更前のInGameSaveGameSlotNameのセーブファイルを削除するという対応も可能ではあります（詳しい説明が難しいため、自力で解決してください）。  
 
 ### コンテニュー機能
 コンテニューの有無をWST_BP_GameInstanceブループリント（/Content/WalkingSimTpl/Blueprint/GameInstance/WST_BP_GameInstance.uasset）のIsContinue関数（WST_BPI_GameInstance_MainGameブループリントインターフェース）で管理しています。  
@@ -403,15 +389,15 @@ UI専用レベルであればプレイヤーキャラクターは不要なため
 ウォーキングシミュレーター用にGameModeは大まかにUI用GameMode（/Content/WalkingSimTpl/Blueprint/GameMode/WST_BP_GameMode_Menu.uasset）とキャラクターが歩く用GameMode（/Content/WalkingSimTpl/Blueprint/GameMode/WST_BP_GameMode_Character.uasset）を作っており、UI用が親クラス（ベース）でキャラクターが歩く用が子クラスとなっています。  
 なお百物語カウンターで使っているGameModeはそれぞれの子クラスであり、UI用GameMode（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_MainMenu.uasset）とキャラクターが歩く用GameMode（/Content/HyakuTales/Blueprint/GameMode/HT_BP_GameMode_Candles.uasset）となっています。  
 
-ゲームの仕様によっては異なりますが、
-* メインメニューレベル（起動画面）: UI用GameMode
-* ステージ1レベル: キャラクターが歩く用GameMode
-* ステージ2レベル: キャラクターが歩く用GameMode
-* ステージ3レベル: キャラクターが歩く用GameMode
-* ステージ4レベル: キャラクターが歩く用GameMode
-* ステージ5レベル: キャラクターが歩く用GameMode
-* エンドロールレベル: UI用GameMode
-のような感じになるかなと思われます（ムービーシーン専用レベルを作る場合はUI用GameModeを使うかもしれません）。
+ゲームの仕様によって異なりますが、  
+* メインメニューレベル（起動画面）: UI用GameMode  
+* ステージ1レベル: キャラクターが歩く用GameMode  
+* ステージ2レベル: キャラクターが歩く用GameMode  
+* ステージ3レベル: キャラクターが歩く用GameMode  
+* ステージ4レベル: キャラクターが歩く用GameMode  
+* ステージ5レベル: キャラクターが歩く用GameMode  
+* エンドロールレベル: UI用GameMode  
+のような感じになるかなと思われます（ムービーシーン専用レベルを作る場合はUI用GameModeを使うかもしれません）。  
 
 全てキャラクターが歩く用GameModeにして、UI用レベルの時はカメラを固定にし、プレイヤーキャラクターの入力を無効化（DisableInput）するといったこともできます。  
 
@@ -429,20 +415,22 @@ NewGame引数がTrueの時は、MainGameSaveGameの初期化処理（ResetMainGa
 
 ## インタラクション
 インタラクションはアイテムを拾ったりドアの開閉などに使うもので、サンプルの百物語カウンターでは蝋燭を消すアクションがこれにあたります。  
-このインタラクション機能はFPS視点向けのため、TPS視点や固定カメラだと期待する判定が行われないため操作性の低下の恐れがあります。  
+アイテムビューアのサンプルActorBlueprint（\Content\HyakuTales\Blueprint\Actor\ItemViewer\HT_BP_Actor_ItemViewer_Sample.uasset）がシンプルなサンプルになるかと思います。  
 
-ゲームでは頻繁に使われる機能のため、インタラクション可能ActorBlueprintのベース（/Content/WalkingSimTpl/Blueprint/Actor/WST_BP_Actor_Interaction_Base.uasset）を作成済みです。  
-このActorBlueprintを複製するか子クラスとして、拾うことができるアイテムなどのActorBlueprintを作ると便利です。  
+このインタラクション機能はFPS視点向けのため、TPS視点や固定カメラには非推奨です。  
+TPS視点や固定カメラの場合は、単純に配置したコリジョン（トリガー）のオーバーラップイベントでドアの開閉などを行うと良いかと思います。  
+
+インタラクション可能ActorBlueprintのベース（/Content/WalkingSimTpl/Blueprint/Actor/WST_BP_Actor_Interaction_Base.uasset）を作成済みですので、このActorBlueprintを複製するか子クラスとして、拾うことができるアイテムなどのActorBlueprintを作ると便利です。  
 もしアセットストアで入手したActorBlueprintにインタラクション機能を追加したい時は、そのActorBlueprintの親クラスが「Actor」であれば、その親クラスを「WST_BP_Actor_Interaction_Base」すれば使えるようになるはずです（親クラスの変更は［クラス設定 > クラスオプション > 親クラス］から行えます）。  
 
 参考までにインタラクション可能なActorBlueprintを作る共通となる手順を紹介します。  
-* ActorComponentとしてWST_BP_InteractionComponent_Actor（/Content/WalkingSimTpl/Component/Interaction/WST_BP_InteractionComponent_Actor.uasset）を追加する。
-* インタラクション用OverlapCollisionを追加する（大き目のサイズにし、プレイヤーキャラクターがオーバーラップしている時にインタラクションの判定処理が行われる）。
-* インタラクション用ArrowComponentを追加する（プレイヤーキャラクターの視界にActorBlueprintが入っているかの基準として使われる）。
-* Lelool_BPI_InteractionActorブループリントインターフェース（/Content/Lelool/Component/Interaction/Actor/Lelool_BPI_InteractionActor.uasset）を実装する。
-* Lelool_BPI_InteractionActorブループリントインターフェースのGetInteractionActorVisioTargets関数がインタラクション用ArrowComponentを返すようにする。
+* ActorComponentとしてWST_BP_InteractionComponent_Actor（/Content/WalkingSimTpl/Component/Interaction/WST_BP_InteractionComponent_Actor.uasset）を追加する。  
+* インタラクション用OverlapCollisionを追加する（大き目のサイズにし、プレイヤーキャラクターがオーバーラップしている時にインタラクションの判定処理が行われる）。  
+* Lelool_BPI_InteractionActorブループリントインターフェース（/Content/Lelool/Component/Interaction/Actor/Lelool_BPI_InteractionActor.uasset）を実装する。  
+* ［オプション］インタラクション用ArrowComponentを追加（プレイヤーキャラクターの視界にActorBlueprintが入っているかの基準として使われる）し、Lelool_BPI_InteractionActorブループリントインターフェースのGetInteractionActorVisioTargets関数がインタラクション用ArrowComponentを返すようにする。  
 
 これらの手順は共通して必要なもので、ActorBlueprint別に「蝋燭を消す」や「アイテムを拾う」や「ドアを開ける」といった個別のアクションに対応する必要があります。  
+オプションのインタラクション用ArrowComponentは、インタラクト対象となるアクター側がプレイヤーキャラクターを見ているかどうかの判定に使用されます。通常は360度全方向からインタラクト可能なのですが、これにより例えば柱に掛かった鍵などを柱の裏側からインタラクトできなくすることが可能になります（画面上に映っていないアクターにインタラクトできてしまう事故防止などに便利）。  
 
 まずはインタラクトが可能になった時に画面下部のインタラクションUIにメニューを表示する方法です。  
 これはLelool_BPI_InteractionActorブループリントインターフェースのGetInteractionActorActions関数を使います。  
@@ -539,17 +527,17 @@ UE5標準のコントローラー振動機能を直接実行する場合やコ�
 GetPlayerControllerノードからGetHUDノードを呼び、そこからGetNotice関数（WST_BPI_HUDブループリントインターフェース）を呼び、そのReturnValueピンからAddNoticeItemノード（Lelool_BPI_Noticeブループリントインターフェース）にメッセージ文字列や表示秒数などを渡すことで通知を表示できます。  
 
 ## 時計
-ホラーゲームの演出用の小物としてアナログ時計のサンプルプログラムを用意しています（デジタル時計にも対応しています）。  
+ホラーゲームの演出用の小物としてアナログ時計のサンプルプログラムを用意しています（デジタル時計にも使えますが、アナログ時計のように各針の角度などの計算が不要なため独自に作成しても良いかと思います）。  
 
 時間を指定することも、プレイヤーの端末のローカル時間に連動することも、高速回転・逆回転・高速逆回転・進まない故障演出（秒針の痙攣）などが簡単にできます。  
-サンプルのメインメニューやポーズメニューから時計の状態を変更できるオプションを用意しているので、どのような機能なのかお試しください。試すとわかるかと思いますが、高速回転演出を行うのであれば秒針が無い時計の方が良いと思いますし、逆回転や進まない故障演出（4時44分44秒）では秒針が無いとわかりにくいとは思います。  
+デモ用百物語カウンターではメインメニューやポーズメニューから時計の状態を変更できるオプションを用意しているので、どのような機能なのかお試しください。試すとわかるかと思いますが、高速回転演出を行うのであれば秒針が無い時計の方が良いと思いますし、逆回転や進まない故障演出（4時44分44秒）では秒針が無いとわかりにくいかなと思います。  
 
 サンプルの時計はゲームに使用するにはチープすぎると思うので、時計のベース用ActorBlueprint（/Content/HyakuTales/Blueprint/Actor/Clock/HT_BP_Actor_Clock_Base.uasset）の子クラスを作って、時計の本体・短針・長針・秒針（必要なら）の3Dモデルを追加すると良いでしょう。  
 時計の針をそれぞれ所定のSceneComponentに配置すると、自動的に時間に合わせて回転します（サンプルも参考にしてください）。
 * HourHandScene（短針/時）
 * MinuteHandScene（長針/分）
 * SecondHandScene（秒針/秒）
-使用する3Dモデルによって向きが異なるため、実際にエディタ上でゲームをプレイする時に確認してください。
+使用する3Dモデルによって向きが異なるため、実際にエディタ上でゲームをプレイして確認しながら調整してください。  
 
 時計の開始時刻は時計ActorBlueprintのTime変数で指定できます（4時44分44秒なら「+00000000.04:44:44.000000000」とします）。  
 また秒針がある時計ではお好みでIsMinuteUnitHand変数にチェックを入れると良いと思います（長針が毎秒動くか00秒の時に動くかどうか）。  
@@ -583,12 +571,13 @@ Unreal Engine標準の[ローカリゼーションダッシュボート](https:/
 * キャラクター: Lelool_IMC_Character（/Content/Lelool/Input/Character/Lelool_IMC_Character.uasset）
 * ダイアログ（会話）: Lelool_IMC_Dialogue（/Content/Lelool/Input/Dialogue/Lelool_IMC_Dialogue.uasset）
 * インタラクト（アイテム取得やドアの開閉などのアクションメニュー）: Lelool_IMC_Interaction（/Content/Lelool/Input/Interaction/Lelool_IMC_Interaction.uasset）
+* アイテムビューア: Lelool_IMC_ItemViewer（\Content\Lelool\Input\ItemViewer\Lelool_IMC_ItemViewer.uasset）
 * 一時停止: Lelool_IMC_Pause（/Content/Lelool/Input/Pause/Lelool_IMC_Pause.uasset）
 
 キーは変更・追加・削除可能で、特定の操作を無効化したい場合はキーを［None］に設定します。  
 テンプレートではサンプルとしてメインメニューとポーズメニューに操作方法のボタンを表示しているため、操作方法を変更する様な場合は操作方法ボタンを非表示にしたり操作方法UIを編集してください。  
 
-「ダッシュ」「しゃがみ」「ズーム」に関しては、サンプルとして実装しているだけでゲーム内容によっては無効化しても良いと思います。  
+「ダッシュ」「しゃがみ」「ズーム」に関しては、サンプルとして実装しているだけでゲーム内容によっては無効化しても良いと思います（また使用するキャラクターアセットなどによってはしゃがみなどに対応していない場合もあります）。  
 プレイヤーによっては操作方法からメタ読みして攻略を考えることもありゲーム体験を損なわせてしまうことがあるかもしれません。  
 「ダッシュ」に関しては移動の遅さのストレスを軽減にも繋がるため、ホラーゲームなどダッシュで雰囲気や恐怖感を損なうなどの理由がなければ有効のままでも良いかと思われます。  
 
