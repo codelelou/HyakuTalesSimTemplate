@@ -60,6 +60,7 @@ Unreal Engineやゲーム制作・プログラミングの初心者という方�
   - [サウンドの種類の設定方法](#サウンドの種類の設定方法)
   - [フォント](#フォント)
   - [プレイヤーキャラクターのカスタマイズ](#プレイヤーキャラクターのカスタマイズ)
+  - [別プロジェクトに移行する](#別プロジェクトに移行する)
 - [よくある質問](#よくある質問)
 
 ---
@@ -780,6 +781,31 @@ BP_FirstPersonCharacterブループリントの［コンポーネント］タブ
 参考として[Advanced Locomotion System V4](https://www.fab.com/ja/listings/ef9651a4-fb55-4866-a2d9-1b38b028f9c7)はキャラクターブループリントにカメラコンポーネントがないようで、このズーム機能は動作しませんでした。  
 カメラはPlayerControllerブループリントで設定する「ALS_PlayerCameraManager」で実装しているようで、このALS_PlayerCameraManagerを使わずにキャラクターブループリントにカメラコンポーネントを追加すればズーム機能を動作させることが可能になるかとは思います。もしくはキャラクターブループリントの［コンポーネント］タブのWST_BP_ZoomComponentを選択し、［詳細］タブの［イベント］から「OnFOVChanged」を追加し、イベントノードに追加されたOnFOVChangedイベントのNewFOV引数をキャラクターブループリントのFirstPorsonFOV変数にセットすることでも可能になるかと思います。  
 ただしアイテムビューアを使用する際などにカメラの位置の取得方法の関係上、カメラ位置が不自然になるといった注意点があります（アイテムビューア表示時はキャラクターのメッシュを非表示にすることで対処可能ではあるかもしれません）。  
+
+## 別プロジェクトに移行する
+このゲームテンプレートを別のUnrealプロジェクトファイルに移行し、移行先で実行する手順を説明します。  
+
+まずは移行先のプロジェクトで次のプラグインが有効になっていない場合は有効にします（設定変更後はエディタの再起動が必要）。  
+* Common UI Plugin  
+
+次のディレクトリが移行に必要となります。  
+* HyakuTales: 百物語カウンターサンプル（不要なら移行不要です）
+* Lelool: 共通システム
+* WalkingSimTpl: ウォーキングシミュレーター
+
+ファイルの移行が成功したら［プロジェクト設定 > プロジェクト > マップ&モード］の設定を必要に応じて行ってください（この設定は移行先プロジェクトによって異なるためご自身で理解・判断が必要です）。  
+
+#### Common UI Pluginの設定
+このゲームテンプレートのUI（ウィジェット）を使用する場合は、ゲームパッド・キーボード＆マウスのボタン・キー表記やそのショートカットキー操作に対応するための設定が必要です。  
+移行先のプロジェクトで既に設定されている場合は調整が必要になるかもしれません。  
+
+［プロジェクト設定 > ゲーム > Common Input Settings］を開きます。  
+* ［インプットデータ］にWST_CommonUIInputData（\Content\WalkingSimTpl\UI\WST_CommonUIInputData.uasset）を設定します。
+* ［プラットフォーム入力 > Windows > Default］の［デフォルトの入力タイプ］を［Gamepad］に設定し、［デフォルトのゲームパッド名］に［Generic］を設定、コントローラーデータには次の2つを設定します。
+  * Lelool_CommonUI_CommonInputBaseControllerData_Gamepad（\Content\Lelool\UI\Lelool_CommonUI_CommonInputBaseControllerData_Gamepad.uasset）
+  * Lelool_CommonUI_CommonInputBaseControllerData_MouseAndKeyboard（\Content\Lelool\UI\Lelool_CommonUI_CommonInputBaseControllerData_MouseAndKeyboard.uasset）
+
+［プロジェクト設定 > エンジン > 基本設定 > ゲームのビューポートクライアントクラス］に［CommonGameViewportClient］を設定します（設定を変更した場合はエディタの再起動を求められると思うので、その場合は指示に従って再起動してください）。
 
 ---
 
