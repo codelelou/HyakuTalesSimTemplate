@@ -67,12 +67,13 @@ Unreal Engineやゲーム制作・プログラミングの初心者という方�
 Unreal Engine 5プロジェクトファイルを編集するためにUnreal Engine（Unrealエディタ）をインストールする必要があります。  
 
 ## Unreal Engineのバージョン
-Unreal Engine 5.5  
+Unreal Engine 5.6  
 
 このバージョン以降のもであれば動作する可能性は高いですが、Unreal Engineのアップデートによっては正常に動作しなくなることはあります。  
 このような場合はUnreal Engineのバージョンを下げる必要があります（1つの開発端末に異なる複数のバージョンのUnreal Engineをインストールできます）。  
 
 なお、このゲームテンプレートのアップデート時に対応するUnreal Engineのバージョンが変更になることがあります（バージョンが変更になっても開発中のゲームテンプレートをアップデートしなければ従来通りに開発は継続可能です）。  
+ver.01.03.00からUnreal Engine 5.6に変更しています（Unreal Engine 5.6で大きな変化があり公式のアセット・テンプレートの利用や解説などでメリットが大きいと判断しました）。  
 
 ## Unreal Engineのインストール
 インストールについてはUnreal Engine全般のテーマのため、詳しくは[Unreal Engineダウンロードページ](https://www.unrealengine.com/ja/download)や解説動画などを参考にしてください。  
