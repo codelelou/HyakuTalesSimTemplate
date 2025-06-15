@@ -318,7 +318,7 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 * WalkingSimTpl: ウォーキングシミュレーターゲームのテンプレート（ファイル名は原則として「WST_」ではじまるように統一しています）
 
 メインのプログラムは極力Leloolフォルダの共通プログラムファイルで行っているため、このゲームテンプレートをアップデートする際はこの共通プログラムファイルがメインになります。  
-そのためLeloolフォルダの編集を避けることで、ゲームテンプレートのアップデートを行う際のマージの手間とリスクの抑制が期待できます。  
+そのためLeloolフォルダの編集を避けることで、ゲームテンプレートのアップデートを行う際のマージの手間とリスクの抑制が期待できます（特に「Blueprint」「Component」「UI」内のファイルの編集は避けてください）。  
 
 ただし操作の入力キーを変更する場合は、Leloolフォルダ直下のInputフォルダ内にあるInputMappingContextデータアセットを編集することにはなるかと思います（アップデート後に入力キーを再設定してください）。  
 もしくはInputMappingContextデータアセットを指定している個所で、独自に作成したInputMappingContextデータアセットを指定します（原則としてサンプルプログラムではInputMappingContextデータアセットをクラス変数化しているはずなので、子クラスなどでオーバーライドできるかと思います）。  
@@ -328,7 +328,11 @@ Windows向けのパッケージ化の準備が完了している場合、次の�
 
 ---
 
-# ウォーキングシミュレーターゲームテンプレート
+# ウォーキングシミュレーターゲームテンプレート  
+共通システムであるLeloolフォルダのプログラム（原則ファイル名が「Lelool_」で始まる）をウォーキングシミュレーターゲーム用に組み合わせた構成になっています。  
+
+それらのプログラムは基本的にウォーキングシミュレーター用の子クラス（原則ファイル名が「WST_」で始まる）を作成して使っています。  
+カスタマイズする場合はこの子クラス側で上書き（オーバーライド）することで、共通システムのアップデートがあった場合でもLeloolフォルダの更新だけで済ませやすくなり、アップデートの手間やリスクを抑制できます。  
 
 ## GameInstance
 GameInstanceはゲーム起動時に呼ばれ、そのままゲーム終了時まで使われます（レベルやGameMode、PlayerController、PlayerCharacterなどは、レベルが変わる度に破棄・読込が行われます）。  
@@ -377,6 +381,14 @@ WST_BP_GameInstanceブループリントのクラス変数（クラスのデフ�
 コンテニュー機能はリストア処理（取得済みのアイテムが未取得扱いや解錠したはずのドアが施錠されたままなど）が不具合リスクになるのですが、逆にスタックやUIバグなどにより進行不能になった時の救済処置にもなるので分岐が無いゲームでもコンテニュー対応にはメリットもあります。  
 しかしゲーム開発初心者の内は技術的な負担も大きいでしょうから、プレイ時間が数時間程度のゲーム内容であれば、スタックやUIバグなどを重点的に行ってコンテニュー未対応でも悪くないと思います（結果的にバグの抑制になるメリットがある）。  
 
+#### メインメニューのコンテニューボタン
+メインメニューWidget（/Content/WalkingSimTpl/UI/MainMenu/WST_WBP_MainMenu.uasset）のコンテニューボタン（/Content/WalkingSimTpl/UI/MainGame/WST_WBP_Button_Start_Continue.uasset）は、ボタン側の処理でGameInstanceのIsContainue関数をチェックしてコンテニューが無い時は無効化しています。  
+ゲームとしてコンテニューに対応しない場合は、メインメニューWidget内のコンテニューボタンを非表示（Visibility=Collapsed）にしてください（メニュー内でコンテニューボタンへの参照があるため、削除する場合は手間が増えます）。  
+
+なお新規プレイボタン・コンテニューボタンのどちらが押された場合でも、GameInstanceのOpenMainLevelイベント（WST_BPI_GameInstance_MainGameブループリントインターフェース）が呼ばれます。  
+NewGame引数がTrueの時は、MainGameSaveGameの初期化処理（ResetMainGameSaveGameイベント）を実行してからメインレベルを開きます。  
+そのため、メインレベルではGameInstanceのIsContainue関数がTrueの時はリストア処理の実装が必要です。もし進行状況によってレベルが異なる場合は、進行状況に応じてあらかじめ開くレベルを変更すると良いでしょう。  
+
 ### GameInstance用ブループリントインターフェース
 GameInstance用ブループリントインターフェースがあります。  
 * Lelool_BPI_GameInstance_Settings（/Content/Lelool/Blueprint/GameInstance/Lelool_BPI_GameInstance_Settings.uasset）
@@ -406,13 +418,27 @@ UI専用レベルであればプレイヤーキャラクターは不要なため
 
 全てキャラクターが歩く用GameModeにして、UI用レベルの時はカメラを固定にし、プレイヤーキャラクターの入力を無効化（DisableInput）するといったこともできます。  
 
-### メインメニューのコンテニューボタン
-メインメニューWidget（/Content/WalkingSimTpl/UI/MainMenu/WST_WBP_MainMenu.uasset）のコンテニューボタン（/Content/WalkingSimTpl/UI/MainGame/WST_WBP_Button_Start_Continue.uasset）は、ボタン側の処理でGameInstanceのIsContainue関数をチェックしてコンテニューが無い時は無効化しています。  
-ゲームとしてコンテニューに対応しない場合は、メインメニューWidget内のコンテニューボタンを非表示（Visibility=Collapsed）にしてください（メニュー内でコンテニューボタンへの参照があるため、削除する場合は手間が増えます）。  
+## PlayerController  
+PlayerControllerはUI用（メインメニューレベルで使用）と、その子クラスであるキャラクター操作用の2種類があり、GameModeでそれぞれ指定しています。  
+* UI用: WST_BP_PlayerController_Menu（\Content\WalkingSimTpl\Blueprint\Controller\WST_BP_PlayerController_Menu.uasset）
+* キャラクター操作用: WST_BP_PlayerController_Character（\Content\WalkingSimTpl\Blueprint\Controller\WST_BP_PlayerController_Character.uasset）
 
-なお新規プレイボタン・コンテニューボタンのどちらが押された場合でも、GameInstanceのOpenMainLevelイベント（WST_BPI_GameInstance_MainGameブループリントインターフェース）が呼ばれます。  
-NewGame引数がTrueの時は、MainGameSaveGameの初期化処理（ResetMainGameSaveGameイベント）を実行してからメインレベルを開きます。  
-そのため、メインレベルではGameInstanceのIsContainue関数がTrueの時はリストア処理の実装が必要です。もし進行状況によってレベルが異なる場合は、進行状況に応じてあらかじめ開くレベルを変更すると良いでしょう。  
+違いは、InputModeがUIOnly（UI用）かGameOnly（キャラクター操作用）の違いと、キャラクター操作用では環境設定の視角や設定の反映や一時停止の切替処理を行っています。  
+
+主な使い方としては、UnrealEngine標準のGetPlayerController関数の返り値に対して、WST_BPI_PlayerControllerブループリントインターフェース（\Content\WalkingSimTpl\Blueprint\Controller\WST_BPI_PlayerController.uasset）経由で以下の機能を呼べます。  
+* ForceFeedback（コントローラー振動）
+* Dialogue（ボイス対応会話システム）
+* ItemViewer（3Dモデルを画面中央に表示して回転・拡大できる機能）
+
+## HUD
+HUDはUI用（メインメニューレベルで使用）と、その子クラスであるキャラクター操作用の2種類があり、GameModeでそれぞれ指定しています。  
+* UI用: WST_BP_HUD_Menu（\Content\WalkingSimTpl\Blueprint\HUD\WST_BP_HUD_Menu.uasset）
+* キャラクター操作用: WST_BP_HUD_Character（\Content\WalkingSimTpl\Blueprint\HUD\WST_BP_HUD_Character.uasset）
+
+違いはキャラクター操作用HUDではレティクル（画面中心点）も管理している点です。  
+
+主な使い方としては、UnrealEngine標準のGetHUD関数（UnrealEngine標準のGetPlayerController関数の返り値に対して実行）の返り値に対して、WST_BPI_HUDブループリントインターフェース（\Content\WalkingSimTpl\Blueprint\HUD\WST_BPI_HUD.uasset）経由で以下の機能を呼べます。  
+* Notice（画面左上に表示するメッセージ）  
 
 ---
 
